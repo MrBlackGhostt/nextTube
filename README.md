@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+YouTube Clone Project
 
-## Getting Started
+This is a Next.js project bootstrapped with create-next-app.
+Overview
+
+Welcome to our YouTube Clone project! This project aims to create a refined version of YouTube that focuses on enhancing user experience by providing more relevant video recommendations. Instead of random content, our platform will prioritize videos from subscribed channels and curated playlists, ensuring a more personalized viewing experience. Moreover, we aim to keep the platform ad-free, with the potential to add more exciting features in the future.
+Getting Started
 
 First, run the development server:
 
-```bash
 npm run dev
+
 # or
+
 yarn dev
+
 # or
+
 pnpm dev
+
 # or
+
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying app/page.tsx. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
+This project uses next/font to automatically optimize and load Inter, a custom Google Font.
+Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    Next.js Documentation - Learn about Next.js features and API.
+    Learn Next.js - An interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
+Contribute
 
-## Deploy on Vercel
+We believe in learning by doing, and this project is a fantastic opportunity to learn, build, and create together. If you're interested in joining this journey and contributing to building a better version of YouTube, we'd love to have you on board! Whether you're a seasoned developer or just starting, your input is valuable. Let’s collaborate and see how far we can take this idea.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Feel free to fork this repository, submit pull requests, and share your thoughts and ideas. Together, we might just create something amazing!
+Deploy on Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
