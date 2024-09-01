@@ -3,11 +3,10 @@ import {  signIn, signOut, useSession } from "next-auth/react";
 import { FaBell, FaHome, FaCompass, FaPlay, FaHistory, FaClock, FaThumbsUp, FaSearch, FaVideo, FaBars } from "react-icons/fa";
 import { MdSubscriptions } from "react-icons/md";
 import { RiVideoLine } from "react-icons/ri";
-import Image from 'next/image';
-// import { CgProfile } from "react-icons/cg";
+
 import { ReactNode, useEffect, useState } from "react";
 
-import { FaUserCircle } from 'react-icons/fa';
+import  Image  from "next/image";
 
 import {
   DropdownMenu,
@@ -49,11 +48,11 @@ const Navbar = ({ children}: NavbarProps) => {
       }
     };
   
-    // if (searchTerm) {
-    //   fetchData();
-    // } else {
-    //   router.push('/home');
-    // }
+    if (searchTerm) {
+      fetchData();
+    } else {
+      router.push('/home');
+    }
   }, [searchParams, router, searchTerm]);
   
 
@@ -110,10 +109,6 @@ const Navbar = ({ children}: NavbarProps) => {
           <button className="p-2 mx-2 hover:bg-gray-100 rounded-full">
             <FaBell size={20} color="#606060" />
           </button>
-          {/* <button className="p-2 mx-2 hover:bg-gray-100 rounded-full" onClick={() => signIn('google')}>
-            {/* <CgProfile size={24} color="#606060" /> */}
-            {/* Login */}
-          {/* </button> */} 
           {status != 'authenticated' ? (
         <>  
      
@@ -129,7 +124,9 @@ const Navbar = ({ children}: NavbarProps) => {
       ) : (
         <>
             <DropdownMenu>
-  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+  <DropdownMenuTrigger className="relative w-8 h-8 rounded-full overflow-hidden">
+<Image src={session.user?.image || ''} alt="user image" fill className="h-auto"/>
+  </DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
