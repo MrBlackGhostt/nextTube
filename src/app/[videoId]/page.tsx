@@ -4,42 +4,46 @@ import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { useSession } from 'next-auth/react';
+import { GetSubscriptionData, GetVideoById } from '../api/auth/youtubeapi';
+
 const Page = () => {
   const params = useSearchParams();
   const [videoId, setVideoId] = useState<string>('');
-  const [videoDetails, setVideoDetails] = useState<any | null>(null);
+  const [videoDetails, setVideoDetails] = useState<VideoDetail | null>(null);
   const [showdescription, setShowdescription] = useState(false)
-
+  const [channelId, setChannelId] = useState([])
+  const userSession = useSession()
+  const access_token = userSession.data?.accessToken
+  const id = params.get('id');
   useEffect(() => {
     if (params) {
-      const id = params.get('id');
       if (id) {
-        setVideoId(id);
+    
         fetchVideoDetails(id);
+        if(access_token) getSubscribeChannel(access_token)
       }
     }
   }, [params]);
 
   const fetchVideoDetails = async (id: string) => {
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY; // Replace with your actual YouTube Data API key
-    const apiUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${id}&key=${apiKey}`;
-
-    try {
-      const response = await axios.get(apiUrl);
-      if (response.data.items && response.data.items.length > 0) {
-        setVideoDetails(response.data.items[0]);
-      }
-    } catch (error) {
-      console.error('Error fetching video details:', error);
-    }
+    const data = await GetVideoById(id)
+    // console.log(Video data id)
+    setVideoDetails(data ? data?.items[0] : null)
   };
 
+  console.log('ACXCESS TOKEN', userSession.data?.accessToken)
+const getSubscribeChannel = async (access_token: string)=>{
+const data = await GetSubscriptionData(access_token)
+console.log('GOT SUBSCRIBE DATA', data?.items)
+}
+
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10">
+    <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 border-2 border-blue-500">
       <div className="w-full lg:w-[75%]">
-        {videoDetails ? <div className=" aspect-video">
+        {id ? <div className=" aspect-video">
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+            src={`https://www.youtube.com/embed/${id}?autoplay=1`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; "
             allowFullScreen
@@ -62,8 +66,8 @@ const Page = () => {
                 <p><strong>Comments:</strong> {parseInt(videoDetails.statistics.commentCount).toLocaleString()}</p>
               </div>
             </div>
-            {showdescription ?<p className="mt-2 max-w-[1280px]">{videoDetails.snippet.description}</p> : ""}
-            <button onClick={() => setShowdescription(!showdescription)}>{showdescription ? "Hide" : "See"} description</button>
+            { showdescription ?<p className="mt-2 max-w-[1280px]">{videoDetails.snippet.description}</p> : ""}
+           {videoDetails.snippet.description &&  <button onClick={() => setShowdescription(!showdescription)}>{showdescription ? "Hide" : "See"} description</button>}
           </div>
         ) : <div className="flex items-center mt-6 aspect-16/2 justify-center bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
         </div>
