@@ -25,7 +25,7 @@ const Page = () => {
         getWatchRelatedVideo(videoDetails?.snippet.categoryId);
       }
     }
-  }, [params]);
+  }, [params,videoDetails?.snippet.categoryId]);
 
   const fetchVideoDetails = async (id: string) => {
     const data = await GetVideoById(id);
@@ -33,7 +33,7 @@ const Page = () => {
   };
 
   const getWatchRelatedVideo = async (categoryId: string | undefined) => {
-    console.log('CATEGORY ID', categoryId);
+  
     const data = await GetSearchData(
       videoDetails?.snippet.title ? videoDetails?.snippet.title : '',
       categoryId
@@ -43,7 +43,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 border-2 border-blue-500">
+    <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 ">
       <div className="w-full lg:w-[75%]">
         {id ? (
           <div className="aspect-video">
@@ -106,7 +106,7 @@ const Page = () => {
         )}
       </div>
 
-      <div className="lg:pl-10 pt-6 lg:pt-0 h-screen overflow-hidden overflow-y-auto">
+      <div className="lg:pl-10 pt-6 lg:pt-0 h-screen w-1/4 overflow-hidden overflow-y-auto">
         <div className="mt-4 space-y-4 ">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1  gap-4">
             {relatedData.map((video) => (
@@ -114,12 +114,12 @@ const Page = () => {
                 key={video.id.videoId}
                 className="flex justify-between gap-4 w-5/6 items-start"
               >
-                <div className="relative w-40 h-24 ">
+                <div className="relative w-14 h-24 aspect-16/2 ">
                   <Image
                     src={video.snippet.thumbnails.high.url}
                     alt={video.snippet.title}
                     fill
-                    className=" rounded-lg object-cover "
+                    className=" rounded-lg object-cover   w-full h-full"
                   />
                 </div>
                 <div className="flex flex-col">
