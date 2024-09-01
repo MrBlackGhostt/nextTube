@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { GetSearchData, GetVideoById } from '../api/auth/youtubeapi';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getItemWithExpiry, setItemWithExpiry } from '@/lib/utils';
 
 const Page = () => {
   const params = useSearchParams();
@@ -15,7 +16,7 @@ const Page = () => {
   const [relatedData, setRelatedData] = useState<Video[]>([]);
   const userSession = useSession();
   const access_token = userSession.data?.accessToken;
-  console.log('access token', access_token);
+
   const id = params.get('id');
 
   useEffect(() => {
@@ -28,19 +29,43 @@ const Page = () => {
   }, [params,videoDetails?.snippet.categoryId]);
 
   const fetchVideoDetails = async (id: string) => {
+    const cacheKey = `${id}`
+    const cachedData = getItemWithExpiry(cacheKey);
+    
+    if(cachedData){
+    
+      return cachedData
+    }
     const data = await GetVideoById(id);
     setVideoDetails(data ? data?.items[0] : null);
+    setItemWithExpiry(cacheKey, data || [], 259200000); 
   };
 
   const getWatchRelatedVideo = async (categoryId: string | undefined) => {
+    const cacheKey = `${categoryId}`;
   
-    const data = await GetSearchData(
+
+    const cachedData = getItemWithExpiry(cacheKey);
+    
+   
+    let oldData = cachedData ? JSON.parse(cachedData) : [];
+  
+
+    const newData = await GetSearchData(
       videoDetails?.snippet.title ? videoDetails?.snippet.title : '',
       categoryId
     );
-    console.log('REALEATED DATA', data);
-    setRelatedData(data || []);
+  
+   
+    const mergedData = newData ? [...oldData, ...newData] : [...oldData];
+  
+   
+    setRelatedData(mergedData);
+  
+ 
+    setItemWithExpiry(cacheKey, mergedData || [], 259200000); 
   };
+  
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 ">
