@@ -48,11 +48,7 @@ const Navbar = ({ children}: NavbarProps) => {
       }
     };
   
-    if (searchTerm) {
-      fetchData();
-    } else {
-      router.push('/home');
-    }
+  
   }, [searchParams, router, searchTerm]);
   
 
