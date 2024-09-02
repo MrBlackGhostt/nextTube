@@ -1,7 +1,3 @@
-import axios from 'axios';
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import React from 'react';
 
 
 
