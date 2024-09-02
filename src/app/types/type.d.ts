@@ -50,6 +50,26 @@ interface Thumbnail {
       publishedAt: string;
     };
   }
+  interface VideoDetail {
+    id: string;
+    snippet: {
+      publishedAt: string;
+      channelId: string;
+      title: string;
+      description: string;
+      thumbnails: {
+        medium: {
+          url: string;
+        };
+      };
+      channelTitle: string;
+    };
+    statistics: {
+      viewCount: string;
+      likeCount: string;
+      commentCount: string;
+    };
+  }
 
   interface YouTubeApiResponse {
     kind: string;

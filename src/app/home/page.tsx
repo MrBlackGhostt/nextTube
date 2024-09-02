@@ -36,7 +36,7 @@ const Homepage: React.FC = () => {
       {/* Video Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {searchData.map((video) => (
-          <Link href={`${video.id.videoId}`}
+          <Link href={`${video.id.videoId}/?id=${video.id.videoId}`}
           key={video.id.videoId}
           >
           <div
