@@ -5,16 +5,16 @@ import { MdSubscriptions } from "react-icons/md";
 import { RiVideoLine } from "react-icons/ri";
 import Image from 'next/image';
 // import { CgProfile } from "react-icons/cg";
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Icons } from "./icons";
+import Sidebar from "./sidebar";
 
 interface NavbarProps {
-  children: ReactNode;
-
+  isSidebarOpen: boolean,
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const Navbar = ({ children}: NavbarProps) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const Navbar = ({ isSidebarOpen, setIsSidebarOpen}: NavbarProps) => {
   const {data: session, status} = useSession()
 console.log('STATUS', )
   return (
@@ -82,79 +82,15 @@ console.log('STATUS', )
       </nav>
 
       {/* Sidebar */}
-      <div className="flex">
+      {/* <div className="flex">
         <div
-          className={`fixed md:relative z-10 flex flex-col h-full p-4 border-r border-2 border-red-400 transition-transform duration-300 ${
+          className={`fixed md:relative z-10 flex flex-col h-full p-4 border-r border-2 border-red-400 transition duration-300 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 ${isSidebarOpen ? "md:w-60" : "md:w-fit"}`}
-        >
-          {/* Top section */}
-          <div className={`flex flex-col mb-4`}>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-              <span className="mr-4">
-                <FaHome size={20} />
-              </span>
-              {isSidebarOpen && (
-                <span className="text-sm font-medium">Home</span>
-              )}
-            </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-              <span className="mr-4">
-                <MdSubscriptions size={20} />
-              </span>
-              {isSidebarOpen && (
-                <span className="text-sm font-medium">Subscriptions</span>
-              )}
-            </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-              <span className="mr-4">
-                <FaPlay size={20} />
-              </span>
-              {isSidebarOpen && (
-                <span className="text-sm font-medium">Playlist</span>
-              )}
-            </button>
-          </div>
-
-          {/* Middle section */}
-          {isSidebarOpen && (
-            <div className="flex flex-col mb-4 border-t border-gray-200 pt-4">
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <FaHistory size={20} />
-                </span>
-                <span className="text-sm font-medium">History</span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <RiVideoLine size={20} />
-                </span>
-                <span className="text-sm font-medium">Your Videos</span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <FaClock size={20} />
-                </span>
-                <span className="text-sm font-medium">Watch Later</span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <FaThumbsUp size={20} />
-                </span>
-                <span className="text-sm font-medium">Liked Videos</span>
-              </button>
-            </div>
-          )}
-
-          {/* Bottom section */}
-          {isSidebarOpen && (
-            <div className="flex flex-col border-t border-gray-200 pt-4">
-              {/* Add more links here if needed */}
-            </div>
-          )}
-        </div>
-        {children}
-      </div>
+        > */}
+          {/* <Sidebar isSidebarOpen={isSidebarOpen}/> */}
+        {/* </div> */}
+      {/* </div> */}
     </>
   );
 }

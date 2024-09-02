@@ -1,6 +1,17 @@
-import { MdPerson } from "react-icons/md";
+import { FC } from "react";
+import { FaHome } from "react-icons/fa";
+import { MdPerson, MdPlaylistAdd, MdSubscriptions } from "react-icons/md";
+import { SiYoutubeshorts } from "react-icons/si";
+import { IconType }  from "react-icons"
+import { CgHome } from "react-icons/cg";
 
-export const Icons = {
+type Iconname =  string | number | symbol
+
+export const Icons: Record<Iconname, IconType> = {
+  home: CgHome,
+  shorts: SiYoutubeshorts,
+  subscriptions: MdSubscriptions,
+  playlists: MdPlaylistAdd,
   yt: () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
