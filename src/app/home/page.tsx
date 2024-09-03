@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
+import { GetSearchData } from '../api/auth/youtubeapi';
 
 
 const Homepage: React.FC = () => {
@@ -13,17 +14,12 @@ const Homepage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiKey ='AIzaSyCrRpxH2h-0Vcge6JA0dAB4oOeF7SCVpfo' || process.env.API_KEY; // Replace with your actual API key
-      const apiUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${encodeURIComponent(
-        searchTerm
-      )}&type=video&key=${apiKey}`;
-
       try {
-        const response = await axios.get(apiUrl);
-        setSearchData(response.data.items || []);
+        const data= await GetSearchData(searchTerm);
+        setSearchData(data|| []);
       } catch (error) {
         console.error('Error fetching the search data:', error);
-        setSearchData([]); // Fallback in case of error
+        setSearchData([]); 
       }
     };
 
@@ -31,8 +27,7 @@ const Homepage: React.FC = () => {
   }, [searchTerm]);
 
   return (
-    <div className="p-4 border-2 border-green-400">
-      <h1>Fetch the data</h1>
+    <div className="p-4 border-2 border-green-400">  
       {/* Video Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {searchData.map((video) => (
@@ -49,7 +44,7 @@ const Homepage: React.FC = () => {
               src={video.snippet.thumbnails.medium.url}
               alt={video.snippet.title}
               fill
-              className="w-full h-auto rounded-t-lg"
+              className="w-full h-auto rounded-lg"
               
             />
 
