@@ -56,7 +56,7 @@ const Navbar = ({ children}: NavbarProps) => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Update the URL with the search query parameter
+    // Update the URL with the query parameter
     const newUrl = `/home/?q=${searchTerm}`;
    
  
