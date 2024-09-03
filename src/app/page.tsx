@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Homepage from "./component/Homepage";
 import Navbar from "./component/Navbar";
-import Sidebar from "./component/sidebar";
+import Sidebar from "../components/sidebar";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
