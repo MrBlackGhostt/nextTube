@@ -10,3 +10,17 @@ export async function GetChannnelData():Promise<YouTubeResponse | undefined>{
         }
     
 }
+
+export async function GetVideoById(): Promise<YouTubeApiResponse | undefined> {
+    try {
+      const response = await axios.get<YouTubeApiResponse>(
+        `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=${process.env.NEXT_APP_API_KEY}`
+      );
+    
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching video data:', error);
+      throw error; 
+    }
+  }
+  
