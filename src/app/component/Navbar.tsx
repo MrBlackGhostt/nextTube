@@ -116,10 +116,10 @@ const Navbar = ({ children }: NavbarProps) => {
           {status != "authenticated" ? (
             <>
               <button
-                className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center text-gray-700"
+                className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-800"
                 onClick={() => signIn("google")}
               >
-                <span className="mr-2">Login</span>
+                <span className="">Login</span>
               </button>
             </>
           ) : (
