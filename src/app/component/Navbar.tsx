@@ -15,7 +15,7 @@ import {
 import { MdSubscriptions } from "react-icons/md";
 import { RiVideoLine } from "react-icons/ri";
 
-import { ReactNode, useEffect, useState } from "react";
+
 
 import Image from "next/image";
 
@@ -28,9 +28,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
+
 import { GetVideoById } from "../api/auth/youtubeapi";
 import { ModeToggle } from "@/components/theme-toggler";
+import { ReactNode, useEffect, useState } from "react";
 
 interface NavbarProps {
   children: ReactNode;
@@ -106,7 +107,6 @@ const Navbar = ({ children }: NavbarProps) => {
             </button>
           </div>
         </div>
-
         {/* Right section */}
         <div className="flex items-center">
           <button className="p-2 mx-2 hover:bg-gray-100 rounded-full">
