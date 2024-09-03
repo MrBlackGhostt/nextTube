@@ -93,7 +93,7 @@ const Navbar = ({ children }: NavbarProps) => {
               type="search"
               placeholder="Search"
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 dark:bg-zinc-800"
+              className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 dark:bg-zinc-800 dark:text-slate-200"
             />
             <button
               onClick={(e) => handleSearch(e)}
