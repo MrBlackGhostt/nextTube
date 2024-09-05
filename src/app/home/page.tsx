@@ -1,5 +1,5 @@
 'use client'
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ const Homepage: React.FC = () => {
   const [searchData, setSearchData] = useState<Video[]>([]);
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
-
+console.log('query', searchTerm)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,17 +27,18 @@ const Homepage: React.FC = () => {
   }, [searchTerm]);
 
   return (
-    <div className="p-4 border-2 border-green-400">  
+    <div className="p-4 border-2 w-full">  
       {/* Video Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6 xl:grid-cols-4 justify-center">
         {searchData.map((video) => (
           <Link href={`${video.id.videoId}/?id=${video.id.videoId}`}
           key={video.id.videoId}
+          className=' w-full overflow-hidden rounded-lg' 
           >
           <div
             key={video.id.videoId}
            
-            className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-80 h-48"
+            className="relative flex flex-col justify-center bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-full h-60  md:h-48"
           >
             {/* Thumbnail */}
             <Image
