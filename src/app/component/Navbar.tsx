@@ -32,6 +32,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { GetVideoById } from "../api/auth/youtubeapi";
 import { ModeToggle } from "@/components/theme-toggler";
 import { ReactNode, useEffect, useState } from "react";
+import Link from "next/link";
 
 interface NavbarProps {
   children: ReactNode;
@@ -39,22 +40,18 @@ interface NavbarProps {
 
 const Navbar = ({ children }: NavbarProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [search, setSearchValue] = useState("");
   const { data: session, status } = useSession();
 
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await GetVideoById();
-      } catch (error) {
-        console.error("Failed to fetch video data:", error);
-      }
-    };
-  }, [searchParams, router, searchTerm]);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) =>{
+  if(event.key === 'Enter'){
+    const newUrl = `/home/?q=${searchTerm}`;
+    router.push(newUrl);
+  }
+  }
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +65,7 @@ const Navbar = ({ children }: NavbarProps) => {
   return (
     <>
       {/* Navbar */}
-      <nav className="flex justify-between items-center p-2 bg-white border-b border-gray-200 dark:bg-black">
+      <nav className="flex justify-between items-center sticky top-0 z-10 p-2 bg-white border-b border-gray-200 dark:bg-black">
         {/* Left section */}
         <div className="flex items-center">
           <button
@@ -96,7 +93,9 @@ const Navbar = ({ children }: NavbarProps) => {
             <input
               type="search"
               placeholder="Search"
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) =>
+                setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
               className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 dark:bg-zinc-800 dark:text-slate-200"
             />
             <button
@@ -108,25 +107,22 @@ const Navbar = ({ children }: NavbarProps) => {
           </div>
         </div>
         {/* Right section */}
-        <div className="flex items-center">
-          <button className="p-2 mx-2 hover:bg-gray-100 rounded-full">
-            <FaVideo size={20} className="dark:text-slate-200 text-slate-800" />
-          </button>
-          <button className="p-2 mx-2 hover:bg-gray-100 rounded-full">
+        <div className="flex items-center justify-between w-fit gap-2 pr-2">
+          <button className="p-2  hover:bg-gray-100 rounded-full">
             <FaBell size={20} className="dark:text-slate-200 text-slate-800" />
           </button>
           <ModeToggle />
           {status != "authenticated" ? (
-            <>
+            <div>
               <button
                 className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-800"
                 onClick={() => signIn("google")}
               >
                 <span className="">Login</span>
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div>
               <DropdownMenu>
                 <DropdownMenuTrigger className="relative w-8 h-8 rounded-full overflow-hidden">
                   <Image
@@ -144,7 +140,7 @@ const Navbar = ({ children }: NavbarProps) => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </>
+            </div>
           )}
         </div>
       </nav>
@@ -152,9 +148,9 @@ const Navbar = ({ children }: NavbarProps) => {
       {/* Sidebar */}
       <div className="flex">
         <div
-          className={`fixed md:relative z-10 flex flex-col h-full p-4 border-r border-2 border-red-400 transition-transform duration-300 ${
+          className={`fixed md:relative z-10 flex flex-col h-full p-4 bg-white dark:bg-black  transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 ${isSidebarOpen ? "md:w-60" : "md:w-fit"}`}
+          } md:translate-x-0 ${isSidebarOpen ? "w-3/5 md:w-fit" : "md:w-fit"}`}
         >
           {/* Top section */}
           <div className={`flex flex-col mb-4`}>
@@ -163,9 +159,9 @@ const Navbar = ({ children }: NavbarProps) => {
                 <FaHome size={20} className="dark:text-slate-200" />
               </span>
               {isSidebarOpen && (
-                <span className="text-sm font-medium dark:text-slate-200">
+                <Link href={'/home'} className="text-sm font-medium dark:text-slate-200">
                   Home
-                </span>
+                </Link>
               )}
             </button>
             <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
@@ -173,9 +169,9 @@ const Navbar = ({ children }: NavbarProps) => {
                 <MdSubscriptions size={20} className="dark:text-slate-200" />
               </span>
               {isSidebarOpen && (
-                <span className="text-sm font-medium dark:text-slate-200">
+                <Link href={'/subscriptions'} className="text-sm font-medium dark:text-slate-200">
                   Subscriptions
-                </span>
+                </Link>
               )}
             </button>
             <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
@@ -183,9 +179,9 @@ const Navbar = ({ children }: NavbarProps) => {
                 <FaPlay size={20} className="dark:text-slate-200" />
               </span>
               {isSidebarOpen && (
-                <span className="text-sm font-medium dark:text-slate-200">
+                <Link href={'/playlist'} className="text-sm font-medium dark:text-slate-200">
                   Playlist
-                </span>
+                </Link>
               )}
             </button>
           </div>
@@ -197,33 +193,9 @@ const Navbar = ({ children }: NavbarProps) => {
                 <span className="mr-4">
                   <FaHistory size={20} className="dark:text-slate-200" />
                 </span>
-                <span className="text-sm font-medium dark:text-slate-200">
+                <Link href={'/history'} className="text-sm font-medium dark:text-slate-200">
                   History
-                </span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <RiVideoLine size={20} className="dark:text-slate-200" />
-                </span>
-                <span className="text-sm font-medium dark:text-slate-200">
-                  Your Videos
-                </span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <FaClock size={20} className="dark:text-slate-200" />
-                </span>
-                <span className="text-sm font-medium dark:text-slate-200">
-                  Watch Later
-                </span>
-              </button>
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
-                <span className="mr-4">
-                  <FaThumbsUp size={20} className="dark:text-slate-200" />
-                </span>
-                <span className="text-sm font-medium dark:text-slate-200">
-                  Liked Videos
-                </span>
+                </Link>
               </button>
             </div>
           )}
