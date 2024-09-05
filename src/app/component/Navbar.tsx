@@ -137,18 +137,24 @@ const Navbar = ({ children}: NavbarProps) => {
 
       {/* Sidebar */}
       <div className="flex">
-        <div className={`fixed md:relative z-10 flex flex-col h-full p-4 border-r border-2 border-red-400 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${isSidebarOpen ? 'md:w-60' : 'md:w-fit'}`}>
+        <div className={`fixed md:relative z-10 flex flex-col h-full p-4 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${isSidebarOpen ? 'md:w-60' : 'md:w-fit'}`}>
           {/* Top section */}
           <div className={`flex flex-col mb-4`}>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg"
+            onClick={() => router.push('home')}
+            >
               <span className="mr-4"><FaHome size={20} /></span>
               {isSidebarOpen && <span className="text-sm font-medium">Home</span>}
             </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg"
+            onClick={() => router.push('subscription')}
+            >
               <span className="mr-4"><MdSubscriptions size={20} /></span>
               {isSidebarOpen && <span className="text-sm font-medium">Subscriptions</span>}
             </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg"
+            onClick={() => router.push('playlist')}
+            >
               <span className="mr-4"><FaPlay size={20} /></span>
               {isSidebarOpen && <span className="text-sm font-medium">Playlist</span>}
             </button>
