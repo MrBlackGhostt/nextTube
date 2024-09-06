@@ -38,6 +38,7 @@ const Homepage: React.FC = () => {
     const fetchData = async () => {
       try {
         const data= await GetSearchData(searchTerm);
+        console.log('DATA',data)
         setSearchData(data|| []);
       } catch (error) {
         console.error('Error fetching the search data:', error);
@@ -46,6 +47,7 @@ const Homepage: React.FC = () => {
     };
 
     fetchData();
+
   }, [searchTerm]);
   
   return (
@@ -59,7 +61,7 @@ const Homepage: React.FC = () => {
           >
           <div
             key={video.id.videoId}
-            className="flex flex-col justify-between rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60  md:h-72"
+            className="flex flex-col gap-2  rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60  md:h-72"
           >
             {/* Thumbnail */}
             <div className='relative w-full h-full'>
@@ -67,15 +69,15 @@ const Homepage: React.FC = () => {
                 src={video.snippet.thumbnails.medium.url}
                 alt={video.snippet.title}
                 fill
-                // objectFit='cover'
+             
                 className="rounded-lg"
                 
               />
             </div>
 
             {/* Video Info */}
-            <div className="flex flex-col space-y-2 p-3">
-              <h3 className="font-semibold text-white text-md truncate">{video.snippet.title}</h3>
+            <div className="">
+              <h3 className="font-semibold  text-md truncate">{video.snippet.title}</h3>
               <div className='flex justify-between text-[14px]'>
                 <p className="">{video.snippet.channelTitle}</p>
                 <p className="">
