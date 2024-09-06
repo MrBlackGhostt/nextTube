@@ -6,12 +6,34 @@ import Link from 'next/link';
 import Image from 'next/image'
 import { GetSearchData } from '../api/auth/youtubeapi';
 
+function timeago(publishedAt: string | number | Date): string {
+  const publishedDate = new Date(publishedAt);
+  const currentDate = new Date();
+  const differenceInSeconds = Math.floor((currentDate.getTime() - publishedDate.getTime())/1000);
+
+  const intervals = [
+    { label: 'year', seconds: 31536000 },
+    { label: 'month', seconds: 2592000 },
+    { label: 'day', seconds: 86400 },
+    { label: 'hour', seconds: 3600 },
+    { label: 'minute', seconds: 60 },
+    { label: 'second', seconds: 1 }
+  ];
+
+  for (const interval of intervals) {
+    const count = Math.floor(differenceInSeconds / interval.seconds);
+    if (count >= 1) {
+      return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    }
+  }
+
+  return 'just now';
+}
 
 const Homepage: React.FC = () => {
   const [searchData, setSearchData] = useState<Video[]>([]);
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
-console.log('query', searchTerm)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,9 +47,9 @@ console.log('query', searchTerm)
 
     fetchData();
   }, [searchTerm]);
-
+  
   return (
-    <div className="p-4 border-2 w-full">  
+    <div className="p-4 w-full">  
       {/* Video Grid */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6 xl:grid-cols-4 justify-center">
         {searchData.map((video) => (
@@ -37,25 +59,29 @@ console.log('query', searchTerm)
           >
           <div
             key={video.id.videoId}
-           
-            className="relative flex flex-col justify-center bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-full h-60  md:h-48"
+            className="flex flex-col justify-between rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60  md:h-72"
           >
             {/* Thumbnail */}
-            <Image
-              src={video.snippet.thumbnails.medium.url}
-              alt={video.snippet.title}
-              fill
-              className="w-full h-auto rounded-lg"
-              
-            />
+            <div className='relative w-full h-full'>
+              <Image
+                src={video.snippet.thumbnails.medium.url}
+                alt={video.snippet.title}
+                fill
+                // objectFit='cover'
+                className="rounded-lg"
+                
+              />
+            </div>
 
             {/* Video Info */}
-            <div className="p-3">
-              <h3 className="font-semibold text-sm truncate">{video.snippet.title}</h3>
-              <p className="text-gray-600 text-xs">{video.snippet.channelTitle}</p>
-              <p className="text-gray-600 text-xs">
-                {new Date(video.snippet.publishedAt).toLocaleDateString()}
-              </p>
+            <div className="flex flex-col space-y-2 p-3">
+              <h3 className="font-semibold text-white text-md truncate">{video.snippet.title}</h3>
+              <div className='flex justify-between text-[14px]'>
+                <p className="">{video.snippet.channelTitle}</p>
+                <p className="">
+                  {timeago(video.snippet.publishedAt)}
+                </p>
+              </div>
             </div>
           </div>
           </Link>
