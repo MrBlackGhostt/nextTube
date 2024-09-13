@@ -27,8 +27,6 @@ const Page = () => {
     try {
       const response = await axios.get(apiUrl);
       if (response.data.items && response.data.items.length > 0) {
-        console.log(response);
-        
         setVideoDetails(response.data.items[0]);
       }
     } catch (error) {
