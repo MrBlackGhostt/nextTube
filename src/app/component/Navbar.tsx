@@ -67,7 +67,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
   return (
     <>
       {/* Navbar */}
-      <nav className="flex justify-between items-center sticky top-0 z-10 p-2 dark:bg-black">
+      <nav className="flex justify-between items-center sticky top-0 z-50 p-2 bg-white dark:bg-black">
         {/* Left section */}
         {mobileSearch && (
   <div className="absolute top-0 left-0 flex items-center justify-between w-full py-2 z-50 bg-white dark:bg-black shadow-md">
@@ -98,12 +98,12 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
 
         <div className="flex items-center justify-between">
           <button
-            className="p-2 hover:bg-gray-100 rounded-full group"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full group"
             onClick={() => setIsSidebarOpen((prev) => !prev)}
           >
             <FaBars
               size={20}
-              className="dark:text-slate-200 dark:group-hover:text-slate-800"
+              className="dark:text-slate-200 dark:group-hover:text-slate-100"
             />
           </button>
           <div className="flex relative md:w-12 md:h-12  items-center ml-6">
@@ -125,11 +125,11 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
               onChange={(e) =>
                 setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyDown}
-              className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 dark:bg-zinc-800 dark:text-slate-200"
+              className="w-full px-4 py-2 text-gray-700 bg-gray-100 rounded-l-full focus:outline-none focus:border-blue-500 dark:bg-zinc-800 dark:text-slate-200"
             />
             <button
               onClick={(e) => handleSearch(e)}
-              className="px-6 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200"
+              className="px-6 py-2 bg-gray-100 dark:bg-zinc-800 rounded-r-full"
             >
               <FaSearch size={24} color="#606060" />
             </button>
@@ -140,8 +140,8 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
       
               <FaSearch className="md:hidden" size={24} color="#606060" onClick={()=>setMobileSearch(!mobileSearch)}/>
           
-          <button className="hidden md:flex p-2  hover:bg-gray-100 rounded-full">
-            <FaBell size={20} className=" dark:text-slate-200 text-slate-800" />
+          <button className="hidden md:flex p-2 hover:bg-gray-100  dark:hover:bg-gray-800 rounded-full">
+            <FaBell size={20} className="text-slate-800 dark:text-slate-200" />
           </button>
           <ModeToggle />
 <div className="hidden md:flex">
@@ -149,7 +149,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
           {status != "authenticated" ? (
             <div >
               <button
-                className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-800"
+                className="p-2 mx-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-100"
                 onClick={() => signIn("google")}
               >
                 <span className="">Login</span>
@@ -183,13 +183,13 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
       {/* Sidebar */}
       <div className="flex">
         <div
-          className={`fixed md:relative z-10 flex flex-col h-full p-4 bg-white dark:bg-black  transition-transform duration-300 ${
+          className={`fixed md:relative z-10 flex flex-col h-full p-4 transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 ${isSidebarOpen ? "w-2/5 md:w-fit" : "md:w-fit"}`}
         >
           {/* Top section */}
           <div className={`flex flex-col mb-4`}>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               <span className="mr-4">
                 <FaHome size={20} className="dark:text-slate-200" />
               </span>
@@ -199,7 +199,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
                 </Link>
               )}
             </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               <span className="mr-4">
                 <MdSubscriptions size={20} className="dark:text-slate-200" />
               </span>
@@ -209,7 +209,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
                 </Link>
               )}
             </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               <span className="mr-4">
                 <FaPlay size={20} className="dark:text-slate-200" />
               </span>
@@ -260,7 +260,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
           {/* Middle section */}
           {isSidebarOpen && (
             <div className="flex flex-col mb-4 border-t border-gray-200 pt-4">
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 rounded-lg">
+              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
                 <span className="mr-4">
                   <FaHistory size={20} className="dark:text-slate-200" />
                 </span>

@@ -51,7 +51,7 @@ const Page = () => {
         </div> : <div className="flex items-center justify-center aspect-video bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
         </div>}
         {videoDetails ? (
-          <div className="bg-gray-800 text-gray-100 p-4 mt-4 rounded-lg shadow-md">
+          <div className="bg-gray-300 dark:bg-gray-800 dark:text-gray-100 p-4 mt-4 rounded-lg shadow-md">
             <h2 className="text-xl sm:text-2xl font-bold">{videoDetails.snippet.title}</h2>
             <div>
               Posted by- {videoDetails.snippet.channelTitle}
@@ -72,7 +72,7 @@ const Page = () => {
         }
       </div>
       <div className='lg:pl-10 pt-6 lg:pt-0'>
-        <h2 className='text-4xl text-gray-100'>Recommendations</h2>
+        <h2 className='text-4xl text-gray-900 dark:text-gray-100'>Recommendations</h2>
       </div>
     </div>
   );
