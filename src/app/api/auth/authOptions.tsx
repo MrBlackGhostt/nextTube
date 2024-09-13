@@ -39,11 +39,6 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
-  jwt: {
-    secret: "123456",
-  }
-
- 
 };
 
 
