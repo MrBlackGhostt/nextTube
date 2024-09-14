@@ -1,6 +1,6 @@
 
 const Homepage= () => {
-
+console.log("object")
   return (
    <Homepage/>
   );
