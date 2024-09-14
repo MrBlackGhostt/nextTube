@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { GetVideoById } from "../api/auth/youtubeapi";
+import { GetSubscribtionData} from "../api/auth/youtubeapi";
 import { ModeToggle } from "@/components/theme-toggler";
 import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
@@ -42,8 +42,37 @@ interface NavbarProps {
 const Navbar = ({ children }: NavbarProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const { data: session, status } = useSession();
-const [mobileSearch, setMobileSearch] = useState<boolean>(false)
+  const [mobileSearch, setMobileSearch] = useState<boolean>(false)
+  const [userSubscribedChannels, setuserSubscribedChannels] = useState<Channel[]>([])
   const router = useRouter();
+
+  const dummySubscriptions = [
+    {
+      id: 1,
+      title: 'freeCodeCamp.org',
+      thumbnail: 'https://yt3.ggpht.com/ytc/AIdro_lGRc-05M2OoE1ejQdxeFhyP7OkJg9h4Y-7CK_5je3QqFI=s88-c-k-c0x00ffffff-no-rj',
+    },
+    {
+      id: 2,
+      title: 'Dhruv Rathee',
+      thumbnail: 'https://yt3.ggpht.com/oQ2NQMuq-9IS6_MZdsGXa0RWecaACremA01Z7jo-YpoEF1H6PyUF8PZzXkV10OYwSP3UMJDeTg=s88-c-k-c0x00ffffff-no-rj',
+    },
+    {
+      id: 3,
+      title: 'Beebom',
+      thumbnail: 'https://yt3.ggpht.com/fQQ_gL8K48zFYTIT4F-agu_Snt4wQbpPfXbfwdOaRgu0DVRwmB_r6V60JXtW-6FfphauTmssWA=s88-c-k-c0x00ffffff-no-rj',
+    },
+  ];
+
+
+  if(session?.user && session?.accessToken) {
+  ( async ()=>{
+  const response = await GetSubscribtionData(session.accessToken);
+  if(response) setuserSubscribedChannels(response.items);
+   
+  })()
+    
+  }
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -182,104 +211,120 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
 
       {/* Sidebar */}
       <div className="flex">
-        <div
-          className={`fixed md:relative z-10 flex flex-col h-full p-4 transition-transform duration-300 ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 ${isSidebarOpen ? "w-2/5 md:w-fit" : "md:w-fit"}`}
-        >
-          {/* Top section */}
-          <div className={`flex flex-col mb-4`}>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <span className="mr-4">
-                <FaHome size={20} className="dark:text-slate-200" />
-              </span>
-              {isSidebarOpen && (
-                <Link href={'/home'} className="text-sm font-medium dark:text-slate-200">
-                  Home
-                </Link>
-              )}
-            </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <span className="mr-4">
-                <MdSubscriptions size={20} className="dark:text-slate-200" />
-              </span>
-              {isSidebarOpen && (
-                <Link href={'/subscriptions'} className="text-sm font-medium dark:text-slate-200">
-                  Subscriptions
-                </Link>
-              )}
-            </button>
-            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <span className="mr-4">
-                <FaPlay size={20} className="dark:text-slate-200" />
-              </span>
-              {isSidebarOpen && (
-                <Link href={'/playlist'} className="text-sm font-medium dark:text-slate-200">
-                  Playlist
-                </Link>
-              )}
-            </button>
-            <div className="flex md:hidden">
-
-            {status != "authenticated" ? (
-            <div>
-              <button
-                className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-800"
-                onClick={() => signIn("google")}
-              >
-                <span className="">Login</span>
-              </button>
-            </div>
-          ) : (
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger className=" flex items-center gap-1 w-fit  relative  rounded-full ">
-                  <div className="relative w-8 h-8">
-                  <Image
-                    src={session.user?.image || ""}
-                    alt="user image"
-                    fill
-                    className="h-auto rounded-full"
-                  />
-                  </div>
-                  <div className="text-sm  ">{session.user?.name}</div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          )}
-            </div>
+      <div
+        className={`fixed md:relative z-10 flex flex-col h-full p-4 transition-transform duration-300 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 ${isSidebarOpen ? 'w-2/5 md:w-fit' : 'md:w-fit'}`}
+      >
+        {/* Top section */}
+        <div className={`flex flex-col mb-4`}>
+          <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            <span className="mr-4">
+              <FaHome size={20} className="dark:text-slate-200" />
+            </span>
+            {isSidebarOpen && (
+              <Link href={'/home'} className="text-sm font-medium dark:text-slate-200">
+                Home
+              </Link>
+            )}
+          </button>
+          <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            <span className="mr-4">
+              <MdSubscriptions size={20} className="dark:text-slate-200" />
+            </span>
+            {isSidebarOpen && (
+              <Link href={'/subscriptions'} className="text-sm font-medium dark:text-slate-200">
+                Subscriptions
+              </Link>
+            )}
+          </button>
+          <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            <span className="mr-4">
+              <FaPlay size={20} className="dark:text-slate-200" />
+            </span>
+            {isSidebarOpen && (
+              <Link href={'/playlist'} className="text-sm font-medium dark:text-slate-200">
+                Playlist
+              </Link>
+            )}
+          </button>
+          <div className="flex md:hidden">
+            {status != 'authenticated' ? (
+              <div>
+                <button
+                  className="p-2 mx-2 hover:bg-gray-100 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-800"
+                  onClick={() => signIn('google')}
+                >
+                  <span className="">Login</span>
+                </button>
+              </div>
+            ) : (
+              <div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className=" flex items-center gap-1 w-fit  relative  rounded-full ">
+                    <div className="relative w-8 h-8">
+                      <Image
+                        src={session.user?.image || ''}
+                        alt="user image"
+                        fill
+                        className="h-auto rounded-full"
+                      />
+                    </div>
+                    <div className="text-sm  ">{session.user?.name}</div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
           </div>
-
-          {/* Middle section */}
-          {isSidebarOpen && (
-            <div className="flex flex-col mb-4 border-t border-gray-200 pt-4">
-              <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                <span className="mr-4">
-                  <FaHistory size={20} className="dark:text-slate-200" />
-                </span>
-                <Link href={'/history'} className="text-sm font-medium dark:text-slate-200">
-                  History
-                </Link>
-              </button>
-            </div>
-          )}
-
-          {/* Bottom section */}
-          {isSidebarOpen && (
-            <div className="flex flex-col border-t border-gray-200 pt-4">
-              {/* Add more links here if needed */}
-            </div>
-          )}
         </div>
-        {children}
+
+        {/* Subscriptions Section */}
+        {isSidebarOpen && (
+          <div className="flex flex-col mb-4 border-t border-gray-200 pt-4">
+            <h2 className="text-sm font-semibold mb-2">Subscriptions</h2>
+            {dummySubscriptions.map((subscription) => (
+              <div key={subscription.id} className="flex items-center mb-2 p-2 hover:bg-gray-100 rounded-lg">
+                <Image
+                  src={subscription.thumbnail}
+                  alt={`${subscription.title} thumbnail`}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                <span className="ml-4 text-sm font-medium dark:text-slate-200">{subscription.title}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Middle section */}
+        {isSidebarOpen && (
+          <div className="flex flex-col mb-4 border-t border-gray-200 pt-4">
+            <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+              <span className="mr-4">
+                <FaHistory size={20} className="dark:text-slate-200" />
+              </span>
+              <Link href={'/history'} className="text-sm font-medium dark:text-slate-200">
+                History
+              </Link>
+            </button>
+          </div>
+        )}
+
+        {/* Bottom section */}
+        {isSidebarOpen && (
+          <div className="flex flex-col border-t border-gray-200 pt-4">
+            {/* Add more links here if needed */}
+          </div>
+        )}
       </div>
+      {children}
+    </div>
     </>
   );
 };

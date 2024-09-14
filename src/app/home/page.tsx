@@ -32,21 +32,22 @@ function timeago(publishedAt: string | number | Date): string {
 }
 
 const Homepage: React.FC = () => {
+  
   const [searchData, setSearchData] = useState<Video[]>([]);
   const [userSubscribedChannels, setuserSubscribedChannels] = useState<{}[]>([])
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
   const userSession =  useSession();
   
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await GetSearchData(searchTerm);
+        console.log('SEARCH DATA',data)
         setSearchData(data|| []);
-        if(userSession.data) {
-          const response = await GetSubscribtionData(userSession.data);
-          if(response) setuserSubscribedChannels(response.items);
-        }
+       
         
       } catch (error) {
         console.error('Error fetching the search data:', error);
