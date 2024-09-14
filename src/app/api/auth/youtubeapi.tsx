@@ -11,6 +11,24 @@ export async function GetChannnelData():Promise<YouTubeResponse | undefined>{
     
 }
 
+export async function GetSubscribtionData(data: any):Promise<YouTubeResponse | undefined>{
+  
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet,contentDetails&mine=true&maxResults=50`,
+      {
+        headers: {
+          Authorization: `Bearer ${data.accessToken}`,
+        },
+      }
+    );
+    return response.data
+  } catch (error) {
+      console.log(error)
+  }
+
+}
+
 export async function GetVideoById(): Promise<YouTubeApiResponse | null> {
     try {
       const response = await axios.get<YouTubeApiResponse>(
