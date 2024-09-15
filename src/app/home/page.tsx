@@ -4,10 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
-
-import { GetSearchData, GetSubscribtionData } from '../api/auth/youtubeapi';
-import { useSession } from 'next-auth/react';
-
+import { GetSearchData } from '../api/auth/youtubeapi';
 
 function timeago(publishedAt: string | number | Date): string {
   const publishedDate = new Date(publishedAt);
@@ -34,24 +31,15 @@ function timeago(publishedAt: string | number | Date): string {
 }
 
 const Homepage: React.FC = () => {
-
-  
   const [searchData, setSearchData] = useState<Video[]>([]);
-  const [userSubscribedChannels, setuserSubscribedChannels] = useState<{}[]>([])
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
-  const userSession =  useSession();
-  
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await GetSearchData(searchTerm);
-        console.log('SEARCH DATA',data)
+        const data= await GetSearchData(searchTerm);
+        console.log('DATA',data)
         setSearchData(data|| []);
-       
-        
       } catch (error) {
         console.error('Error fetching the search data:', error);
         setSearchData([]); 
@@ -60,9 +48,7 @@ const Homepage: React.FC = () => {
 
     fetchData();
 
-
-  }, [searchTerm, userSession.data]);
-
+  }, [searchTerm]);
   
   return (
     <div className="p-4 w-full">  
@@ -83,7 +69,7 @@ const Homepage: React.FC = () => {
                 src={video.snippet.thumbnails.medium.url}
                 alt={video.snippet.title}
                 fill
-                sizes='h-full'
+             
                 className="rounded-lg"
                 
               />
