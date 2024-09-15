@@ -1,8 +1,6 @@
 
 const Homepage= () => {
 
-
-
   return (
    <Homepage/>
   );
