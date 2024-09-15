@@ -56,12 +56,12 @@ export async function GetVideoById(id: string): Promise<YouTubeApiResponse | nul
   }
   
 
-export async function GetSearchData(searchTerm: string):Promise<Video[] | null >{
+export async function GetSearchData(searchTerm: string, videoId?: string):Promise<Video[] | null >{
 try {
   const apiKey =process.env.NEXT_PUBLIC_API_KEY; // Replace with your actual API key
   const apiUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${encodeURIComponent(
     searchTerm
-  )}&type=video&key=${apiKey}`;
+  )}&type=video${videoId ? `&videoCategoryId=${videoId}` : ''}&videoDuration=medium&key=${apiKey}`;
   const response = await axios.get(apiUrl)
   return response.data.items
 } catch (error) {
@@ -69,3 +69,4 @@ try {
   throw error
 }
 }
+

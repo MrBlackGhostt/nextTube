@@ -58,16 +58,24 @@ interface Thumbnail {
   }
   
   interface Video {
+    statistics: any;
     id: {
       videoId: string;
     };
     snippet: {
       thumbnails: {
-        medium: { url: string };
+        default: Thumbnail;
+        medium: Thumbnail;
+        high: Thumbnail;
       };
       title: string;
       channelTitle: string;
       publishedAt: string;
+    };
+    statistics: {
+      viewCount: string;
+      likeCount: string;
+      commentCount: string;
     };
   }
   interface VideoDetail {
@@ -77,10 +85,11 @@ interface Thumbnail {
       channelId: string;
       title: string;
       description: string;
+      categoryId: string
       thumbnails: {
-        medium: {
-          url: string;
-        };
+        default: Thumbnail;
+        medium: Thumbnail;
+        high: Thumbnail;
       };
       channelTitle: string;
     };
