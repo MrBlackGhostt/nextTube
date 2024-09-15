@@ -1,5 +1,6 @@
 import axios from "axios"
 
+
 const getApiKey = () => {
   if (typeof window !== 'undefined') {
     return localStorage.getItem("userApiKey") || process.env.NEXT_PUBLIC_API_KEY;
@@ -104,3 +105,4 @@ export async function GetSearchData(searchTerm: string): Promise<Video[] | null>
 }
 
   
+

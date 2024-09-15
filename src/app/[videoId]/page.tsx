@@ -8,6 +8,7 @@ const Page = () => {
   const params = useSearchParams();
   const [videoId, setVideoId] = useState<string>('');
   const [videoDetails, setVideoDetails] = useState<any | null>(null);
+
   const [showdescription, setShowdescription] = useState(false)
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const Page = () => {
   };
 
   return (
+
     <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10">
       <div className="w-full lg:w-[75%]">
         {videoDetails ? <div className=" aspect-video">
@@ -44,6 +46,7 @@ const Page = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; "
             allowFullScreen
             title={videoDetails?.snippet?.title || 'Embedded YouTube Video'}
+
             className="w-full h-full rounded-3xl"
           ></iframe>
         </div> : <div className="flex items-center justify-center aspect-video bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
@@ -71,6 +74,7 @@ const Page = () => {
       </div>
       <div className='lg:pl-10 pt-6 lg:pt-0'>
         <h2 className='text-4xl text-gray-900 dark:text-gray-100'>Recommendations</h2>
+
       </div>
     </div>
   );

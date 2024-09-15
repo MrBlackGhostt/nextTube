@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
+
 import { GetSearchData, GetSubscribtionData } from '../api/auth/youtubeapi';
 import { useSession } from 'next-auth/react';
+
 
 function timeago(publishedAt: string | number | Date): string {
   const publishedDate = new Date(publishedAt);
@@ -32,6 +34,7 @@ function timeago(publishedAt: string | number | Date): string {
 }
 
 const Homepage: React.FC = () => {
+
   
   const [searchData, setSearchData] = useState<Video[]>([]);
   const [userSubscribedChannels, setuserSubscribedChannels] = useState<{}[]>([])
@@ -57,7 +60,9 @@ const Homepage: React.FC = () => {
 
     fetchData();
 
+
   }, [searchTerm, userSession.data]);
+
   
   return (
     <div className="p-4 w-full">  
