@@ -3,13 +3,29 @@ import GoogleProvider from "next-auth/providers/google";
 import { JWT } from "next-auth/jwt";
 import { Session, Account } from "next-auth";
 
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string;
+    refreshToken?: string;
+    idToken?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string;
+    refreshToken?: string;
+    idToken?: string;
+  }
+}
+
 // Define your NextAuthOptions
 export const authOptions: NextAuthOptions = {
   providers: [ 
     
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_ID || "",
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET || "",
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
       authorization: {
         params: {
           prompt: "consent",
@@ -22,14 +38,7 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    
-    async jwt({
-      token,
-      account,
-    }: {
-      token: JWT;
-      account?: Account | null;
-    }) {
+    async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
@@ -37,19 +46,14 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    // Typing for the Session callback
-    async session({
-      session,
-      token,
-    }: {
-      session: Session;
-      token: JWT;
-    }) {
+    async session({ session, token }) {
       session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken; // Make sure this is passed
       session.idToken = token.idToken;
       return session;
     },
   },
+  
   session: {
     strategy: "jwt",
   },

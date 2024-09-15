@@ -44,6 +44,15 @@ const Navbar = ({ children }: NavbarProps) => {
   const { data: session, status } = useSession();
   const [mobileSearch, setMobileSearch] = useState<boolean>(false)
   const [userSubscribedChannels, setuserSubscribedChannels] = useState<Channel[]>([])
+  const [apiKey, setApiKey] = useState("");
+
+  const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Store API key in localStorage
+    localStorage.setItem("userApiKey", apiKey);
+    alert("API key saved successfully.");
+  };
+
   const router = useRouter();
 
   const dummySubscriptions = [
@@ -323,6 +332,20 @@ const Navbar = ({ children }: NavbarProps) => {
           </div>
         )}
       </div>
+      {isSidebarOpen && (
+        <form onSubmit={handleSubmit}>
+        <label htmlFor="api-key">Enter API Key:</label>
+        <input
+          type="text"
+          id="api-key"
+          name="api-key"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          required
+        />
+        <button type="submit">Save API Key</button>
+      </form>
+      )}
       {children}
     </div>
     </>
