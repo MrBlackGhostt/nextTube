@@ -1,5 +1,5 @@
 import React from 'react'
-import { getPlayListData, GetSubscribtionData } from '../api/auth/youtubeapi'
+import { getPlayListData } from '../api/auth/youtubeapi'
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/authOptions';

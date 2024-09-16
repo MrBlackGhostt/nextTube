@@ -63,7 +63,7 @@ export async function getPlayListData(token: any):Promise<YouTubeResponse | unde
 
 }
 
-export async function GetVideoById(): Promise<YouTubeApiResponse | null> {
+export async function GetVideoById(id: string): Promise<YouTubeApiResponse | null> {
     try {
       const apiUrl =`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${process.env.NEXT_PUBLIC_API_KEY}`
       const response = await axios.get(apiUrl);
