@@ -1,3 +1,20 @@
+
+interface YouTubeSubscriptionListResponse {
+  kind: string;
+  etag: string;
+  nextPageToken?: string;
+  pageInfo: PageInfo;
+  items: SubscriptionItem[]; 
+}
+
+interface SubscriptionItem {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: Snippet; 
+  contentDetails: ContentDetails;
+}
+
 interface Thumbnail {
     url: string;
     width: number;
@@ -5,16 +22,19 @@ interface Thumbnail {
   }
   
   interface Snippet {
+    publishedAt: string;
     title: string;
     description: string;
-    customUrl: string;
-    publishedAt: string;
+    resourceId: {
+      kind: string;
+      channelId: string;
+    };
+    channelId: string;
     thumbnails: {
       default: Thumbnail;
       medium: Thumbnail;
       high: Thumbnail;
     };
-    country: string;
   }
   
   interface Statistics {
@@ -38,16 +58,24 @@ interface Thumbnail {
   }
   
   interface Video {
+    statistics: any;
     id: {
       videoId: string;
     };
     snippet: {
       thumbnails: {
-        medium: { url: string };
+        default: Thumbnail;
+        medium: Thumbnail;
+        high: Thumbnail;
       };
       title: string;
       channelTitle: string;
       publishedAt: string;
+    };
+    statistics: {
+      viewCount: string;
+      likeCount: string;
+      commentCount: string;
     };
   }
   interface VideoDetail {
@@ -57,10 +85,11 @@ interface Thumbnail {
       channelId: string;
       title: string;
       description: string;
+      categoryId: string
       thumbnails: {
-        medium: {
-          url: string;
-        };
+        default: Thumbnail;
+        medium: Thumbnail;
+        high: Thumbnail;
       };
       channelTitle: string;
     };
@@ -74,6 +103,7 @@ interface Thumbnail {
   interface YouTubeApiResponse {
     kind: string;
     etag: string;
+    id:string
     items: YouTubeVideoItem[];
     pageInfo: PageInfo;
   }
