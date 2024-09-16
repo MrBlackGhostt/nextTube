@@ -20,7 +20,7 @@ async function Playlist() {
   if (!playlist?.length) {
     return (
         <div>
-            You don't have any playlist.
+            You don&apos;t have any playlist.
         </div>
     )
   };  
