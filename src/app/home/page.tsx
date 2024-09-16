@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
-import { GetSearchData, GetSubscribtionData } from '../api/auth/youtubeapi';
+import { GetSearchData} from '../api/auth/youtubeapi';
 import { useSession } from 'next-auth/react';
 
 function timeago(publishedAt: string | number | Date): string {
@@ -37,15 +37,15 @@ const Homepage: React.FC = () => {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
   const userSession =  useSession();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await GetSearchData(searchTerm);
         setSearchData(data|| []);
         if(userSession.data) {
-          const response = await GetSubscribtionData(userSession.data);
-          if(response) setuserSubscribedChannels(response.items);
+          // const response = await GetSubscribtionData(userSession.data.accessToken);
+          // if(response) setuserSubscribedChannels(response.items);
         }
         
       } catch (error) {
