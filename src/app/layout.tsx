@@ -1,13 +1,9 @@
-
 import "./globals.css";
 import Navbar from "./component/Navbar";
 import Provider from "./provider";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-
-
-
-
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({
   children,
@@ -16,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body >
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -24,6 +20,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Provider>
+            <NextTopLoader color="#FF0000" />
             <Suspense>
               <Navbar>{children}</Navbar>
             </Suspense>
