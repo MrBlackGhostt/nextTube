@@ -20,7 +20,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Provider>
-            <NextTopLoader color="#FF0000" />
+            <NextTopLoader color="#FF0000" showSpinner={false} />
             <Suspense>
               <Navbar>{children}</Navbar>
             </Suspense>
