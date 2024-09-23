@@ -1,12 +1,12 @@
-
 import "./globals.css";
 import Navbar from "./component/Navbar";
 import Provider from "./provider";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
+
+import NextTopLoader from "nextjs-toploader";
 import { LoginContext } from "./userInfo";
 import { useSession } from "next-auth/react";
-
 
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   const userSession = useSession()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body >
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -26,6 +26,7 @@ export default function RootLayout({
         >
 
           <Provider>
+            <NextTopLoader color="#FF0000" showSpinner={false} />
             <Suspense>
               <LoginContext.Provider value={userSession}>
 
