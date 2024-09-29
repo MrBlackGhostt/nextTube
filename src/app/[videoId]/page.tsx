@@ -22,24 +22,24 @@ const Page = () => {
   useEffect(() => {
     if (params) {
       if (id) {
-        fetchVideoDetails(id);
+        // fetchVideoDetails(id);
         getWatchRelatedVideo(videoDetails?.snippet.categoryId);
       }
     }
   }, [params,videoDetails?.snippet.categoryId]);
 
-  const fetchVideoDetails = async (id: string) => {
-    const cacheKey = `${id}`
-    const cachedData = getItemWithExpiry(cacheKey);
+  // const fetchVideoDetails = async (id: string) => {
+  //   const cacheKey = `${id}`
+  //   const cachedData = getItemWithExpiry(cacheKey);
     
-    if(cachedData){
+  //   if(cachedData){
     
-      return cachedData
-    }
-    const data = await GetVideoById(id);
-    setVideoDetails(data ? data?.items[0] : null);
-    setItemWithExpiry(cacheKey, data || [], 259200000); 
-  };
+  //     return cachedData
+  //   }
+  //   const data = await GetVideoById(id);
+  //   setVideoDetails(data ? data?.items[0] : null);
+  //   setItemWithExpiry(cacheKey, data || [], 259200000); 
+  // };
 
   const getWatchRelatedVideo = async (categoryId: string | undefined) => {
     const cacheKey = `${categoryId}`;
