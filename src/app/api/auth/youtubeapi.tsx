@@ -47,6 +47,26 @@ export async function GetSubscriptionData(
 }
 
 
+export async function getPlayListData(token: any):Promise<YouTubeResponse | undefined | any>{
+  
+  try {
+    
+    const response = await axios.get(
+      `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=50`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    
+    return response.data
+  } catch (error) {
+      return error;
+  }
+
+}
+
 export async function GetVideoById(id: string): Promise<YouTubeApiResponse | null> {
     try {
       const apiUrl =`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${process.env.NEXT_PUBLIC_API_KEY}`
