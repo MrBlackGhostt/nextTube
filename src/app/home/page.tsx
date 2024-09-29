@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { GetSearchData } from '../api/auth/youtubeapi';
 import { useSession } from 'next-auth/react';
-import useSWR from 'swr';
+// import useSWR from 'swr';
 import { getItemWithExpiry, setItemWithExpiry } from '@/lib/utils';
 
 function timeago(publishedAt: string | number | Date): string {
@@ -56,13 +56,13 @@ const Homepage: React.FC = () => {
   const userSession = useSession();
 
   // Using SWR to fetch and cache data
-  const { data, error } = useSWR(() => [searchTerm, videoId], fetcher, {
-    onSuccess: (data) => {
-      setSearchData(data || []);
-    }
-  });
+  // const { data, error } = useSWR(() => [searchTerm, videoId], fetcher, {
+  //   onSuccess: (data) => {
+  //     setSearchData(data || []);
+  //   }
+  // });
 
-  if (error) return <div>failed to load</div>;
+  // if (error) return <div>failed to load</div>;
 
   return (
     <div className="p-4 w-full">  
