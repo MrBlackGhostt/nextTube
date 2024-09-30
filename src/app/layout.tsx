@@ -1,12 +1,9 @@
 
-import "./globals.css";
-import Navbar from "./component/Navbar";
-import Provider from "./provider";
-import { Suspense } from "react";
-import { ThemeProvider } from "@/components/theme-provider";
-
-
-
+import './globals.css';
+import Navbar from './component/Navbar';
+import Provider, { RecoilProvider } from './provider';
+import { Suspense } from 'react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 
 export default function RootLayout({
@@ -16,7 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body >
+      <body>
+      <RecoilProvider>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -29,6 +28,8 @@ export default function RootLayout({
             </Suspense>
           </Provider>
         </ThemeProvider>
+      </RecoilProvider>
+   
       </body>
     </html>
   );
