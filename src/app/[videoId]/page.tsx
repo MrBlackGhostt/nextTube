@@ -57,7 +57,7 @@ const Page = () => {
     );
   
    
-    const mergedData = newData ? [...oldData, ...newData] : [...oldData];
+    const mergedData = newData ? [...oldData, ...newData.items] : [...oldData];
   
    
     setRelatedData(mergedData);

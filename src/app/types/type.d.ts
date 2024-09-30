@@ -56,6 +56,19 @@ interface Thumbnail {
     };
     statistics: Statistics;
   }
+
+  interface YouTubeSearchResponse {
+    kind: string;
+    etag: string;
+    nextPageToken: string;
+    regionCode: string;
+    pageInfo: {
+        totalResults: number;
+        resultsPerPage: number;
+    };
+    items: Video[];
+}
+
   
   interface Video {
     statistics: any;

@@ -80,7 +80,7 @@ export async function GetVideoById(id: string): Promise<YouTubeApiResponse | nul
   }
   
 
-  export async function GetSearchData(searchTerm: string, videoId?: string): Promise<Video[] | null> {
+  export async function GetSearchData(searchTerm: string, videoId?: string): Promise<YouTubeSearchResponse | null> {
     try {
       const apiKey = process.env.NEXT_PUBLIC_API_KEY; // Ensure you have the correct API key setup
       const apiUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${encodeURIComponent(

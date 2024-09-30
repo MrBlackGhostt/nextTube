@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GetSearchData } from '../api/auth/youtubeapi';
-
+import { useSession } from 'next-auth/react';
 
 
 function timeago(publishedAt: string | number | Date): string {
@@ -40,19 +40,24 @@ const Homepage: React.FC = () => {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
   
+  const {data:Session} = useSession()
+
+  console.log('ACCESS TOKEN', Session?.accessToken)
 
 useEffect(()=>{
   (async () => {
     try {
-      const searchData = await GetSearchData(searchTerm);
+      const youtubeSearchData = await GetSearchData(searchTerm);
       console.log('API SEARCH DATA', searchData);
-      setSearchData(searchData ? searchData : []);
+      setSearchData(youtubeSearchData ? youtubeSearchData?.items  : []);
     } catch (err) {
       console.error('Error fetching search data', err);
       setError('Failed to load search data');
     }
-  })();
 
+  })();
+console.log('SEARCH DATA', searchData
+)
 },[searchTerm])
 
 if (error) return <h1>{error}</h1>;
@@ -62,7 +67,7 @@ if (error) return <h1>{error}</h1>;
     <div className="p-4 w-full">  
     {/* Video Grid */}
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6 xl:grid-cols-4 justify-center">
-      {searchData.length > 0 && searchData.map((video) => (
+      { searchData.map((video) => (
         <Link href={`${video.id.videoId}/?id=${video.id.videoId}`} key={video.id.videoId} className=' w-full overflow-hidden rounded-lg'>
           <div className="flex flex-col gap-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60 md:h-72">
             {/* Thumbnail */}
