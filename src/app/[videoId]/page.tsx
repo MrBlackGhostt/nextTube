@@ -2,70 +2,26 @@
 
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { GetSearchData, GetVideoById } from '../api/auth/youtubeapi';
+
 import Image from 'next/image';
-import Link from 'next/link';
-import { getItemWithExpiry, setItemWithExpiry } from '@/lib/utils';
+
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { RelatedVideos, SearchYoutubeData, VideoDetails } from '../store/atoms';
 
 const Page = () => {
   const params = useSearchParams();
-  const [videoId, setVideoId] = useState<string>('');
-  const [videoDetails, setVideoDetails] = useState<VideoDetail | null>(null);
+  const videoDetails = useRecoilValue(VideoDetails);
   const [showdescription, setShowdescription] = useState(false);
-  const [relatedData, setRelatedData] = useState<Video[]>([]);
-  const userSession = useSession();
-  const access_token = userSession.data?.accessToken;
-
-  const id = params.get('id');
+  const relatedData = useRecoilValue(RelatedVideos);
 
   useEffect(() => {
-    if (params) {
-      if (id) {
-        // fetchVideoDetails(id);
-        getWatchRelatedVideo(videoDetails?.snippet.categoryId);
-      }
-    }
-  }, [params,videoDetails?.snippet.categoryId]);
+    console.log('Updated VideoDetails: ', videoDetails);
+    console.log('RelatedData in component:', relatedData);
+  }, [videoDetails, relatedData]);
 
-  // const fetchVideoDetails = async (id: string) => {
-  //   const cacheKey = `${id}`
-  //   const cachedData = getItemWithExpiry(cacheKey);
-    
-  //   if(cachedData){
-    
-  //     return cachedData
-  //   }
-  //   const data = await GetVideoById(id);
-  //   setVideoDetails(data ? data?.items[0] : null);
-  //   setItemWithExpiry(cacheKey, data || [], 259200000); 
-  // };
-
-  const getWatchRelatedVideo = async (categoryId: string | undefined) => {
-    const cacheKey = `${categoryId}`;
-  
-
-    const cachedData = getItemWithExpiry(cacheKey);
-    
-   
-    let oldData = cachedData ? JSON.parse(cachedData) : [];
-  
-
-    const newData = await GetSearchData(
-      videoDetails?.snippet.title ? videoDetails?.snippet.title : '',
-      categoryId
-    );
-  
-   
-    const mergedData = newData ? [...oldData, ...newData.items] : [...oldData];
-  
-   
-    setRelatedData(mergedData);
-  
  
-    setItemWithExpiry(cacheKey, mergedData || [], 259200000); 
-  };
-  
+  const id = params.get('id');
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 ">
@@ -77,7 +33,7 @@ const Page = () => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
               allowFullScreen
-              title={videoDetails?.snippet?.title || 'Embedded YouTube Video'}
+              title={videoDetails?.snippet.title || 'Embedded YouTube Video'}
               className="w-full h-full rounded-3xl"
             ></iframe>
           </div>
@@ -89,7 +45,7 @@ const Page = () => {
             <h2 className="text-xl sm:text-2xl font-bold">
               {videoDetails.snippet.title}
             </h2>
-            <div>Posted by- {videoDetails.snippet.channelTitle}</div>
+            {/* <div>Posted by- {videoDetails.snippet.channelTitle}</div> */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm mb-4">
               <p>
                 {new Date(
@@ -99,17 +55,17 @@ const Page = () => {
               <div className="flex space-x-4">
                 <p>
                   <strong>Views:</strong>{' '}
-                  {parseInt(videoDetails.statistics.viewCount).toLocaleString()}
+                  {/* {parseInt(videoDetails.statistics.viewCount).toLocaleString()} */}
                 </p>
                 <p>
                   <strong>Likes:</strong>{' '}
-                  {parseInt(videoDetails.statistics.likeCount).toLocaleString()}
+                  {/* {parseInt(videoDetails.statistics.likeCount).toLocaleString()} */}
                 </p>
                 <p>
                   <strong>Comments:</strong>{' '}
-                  {parseInt(
+                  {/* {parseInt(
                     videoDetails.statistics.commentCount
-                  ).toLocaleString()}
+                  ).toLocaleString()} */}
                 </p>
               </div>
             </div>
@@ -130,7 +86,7 @@ const Page = () => {
           <div className="flex items-center mt-6 aspect-16/2 justify-center bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"></div>
         )}
       </div>
-
+{/* Related Videos */}
       <div className="lg:pl-10 pt-6 lg:pt-0 h-screen w-1/4 overflow-hidden overflow-y-auto">
         <div className="mt-4 space-y-4 ">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1  gap-4">

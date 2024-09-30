@@ -82,8 +82,12 @@ interface Thumbnail {
         high: Thumbnail;
       };
       title: string;
+      description: string,
+      publishTime: string,
+      publishAt: string,
       channelTitle: string;
       publishedAt: string;
+
     };
     statistics: {
       viewCount: string;

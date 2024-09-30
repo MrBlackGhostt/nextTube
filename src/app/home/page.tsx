@@ -6,7 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { GetSearchData } from '../api/auth/youtubeapi';
 import { useSession } from 'next-auth/react';
-
+import { RelatedVideos, SearchYoutubeData, VideoDetails } from '../store/atoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 function timeago(publishedAt: string | number | Date): string {
   const publishedDate = new Date(publishedAt);
@@ -32,32 +33,36 @@ function timeago(publishedAt: string | number | Date): string {
   return 'just now';
 }
 
-
-
 const Homepage: React.FC = () => {
-  const [searchData, setSearchData] = useState<Video[]>([]);
+  const [searchData, setSearchData] = useRecoilState<Video[]>(SearchYoutubeData);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const searchTerm = searchParams.get('q') || '';
+  const searchTerm = searchParams.get('q') || null;
   
-  const {data:Session} = useSession()
+  const videoDetails = useRecoilValue(VideoDetails);
+  const setVideoData = useSetRecoilState(VideoDetails);
+  const setRelatedVideos = useSetRecoilState(RelatedVideos)
 
-  console.log('ACCESS TOKEN', Session?.accessToken)
+
+
 
 useEffect(()=>{
-  (async () => {
-    try {
-      const youtubeSearchData = await GetSearchData(searchTerm);
-      console.log('API SEARCH DATA', searchData);
-      setSearchData(youtubeSearchData ? youtubeSearchData?.items  : []);
-    } catch (err) {
-      console.error('Error fetching search data', err);
-      setError('Failed to load search data');
-    }
+ 
 
-  })();
-console.log('SEARCH DATA', searchData
-)
+    (async () => {
+      try {
+        const youtubeSearchData =  searchTerm ? await GetSearchData(searchTerm) : null;
+        if (youtubeSearchData && youtubeSearchData.items && youtubeSearchData.items.length > 0) {
+        setSearchData(prev => youtubeSearchData ? [...youtubeSearchData?.items , ...(prev || [])]  : []);
+        }
+      } catch (err) {
+        console.error('Error fetching search data', err);
+        setError('Failed to load search data');
+      }
+  console.log('UPDATE SEARCH DATA', searchData)
+    })();
+  
+console.log('New Seach Data', searchData)
 },[searchTerm])
 
 if (error) return <h1>{error}</h1>;
@@ -67,8 +72,33 @@ if (error) return <h1>{error}</h1>;
     <div className="p-4 w-full">  
     {/* Video Grid */}
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6 xl:grid-cols-4 justify-center">
-      { searchData.map((video) => (
-        <Link href={`${video.id.videoId}/?id=${video.id.videoId}`} key={video.id.videoId} className=' w-full overflow-hidden rounded-lg'>
+      { searchData.map((video, index) => (
+ <Link
+ href={`${video.id.videoId}/?id=${video.id.videoId}`}
+ onClick={() => {
+   setVideoData({
+    snippet: {
+      title: video.snippet.title || '',
+      description: video.snippet.description || '',
+      publishTime: video.snippet.publishTime || '',
+      publishAt: video.snippet.publishAt || '',
+      channelTitle: video.snippet.channelTitle || '',
+      publishedAt: video.snippet.publishedAt || '',
+    },
+    statistics: {
+      viewCount: video.statistics.viewCount || '',
+      likeCount: video.statistics.likeCount || '',
+      commentCount: video.statistics.commentCount || '',
+    },
+   });
+   setRelatedVideos(searchData)
+   setTimeout(() => {
+    console.log('Current VideoDetails:', videoDetails); // Ensure that the atom is updated
+  }, 100);
+ }}
+ key={index}
+ className="w-full overflow-hidden rounded-lg"
+>
           <div className="flex flex-col gap-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60 md:h-72">
             {/* Thumbnail */}
             <div className='relative w-full h-full'>
