@@ -16,35 +16,6 @@ export async function GetChannnelData():Promise<YouTubeResponse | undefined>{
     
 }
 
-export async function GetSubscriptionData(
-  accessToken: string | undefined
-): Promise<YouTubeSubscriptionListResponse | undefined> {
-  if (!accessToken) {
-    throw new Error("Access token is missing");
-  }
-
-  try {
-    const response = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/subscriptions?part=snippet,contentDetails&maxResults=25&mine=true`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // Ensure the token is valid and not expired
-        },
-      }
-    );
-    return response.data.items; // Return the items directly
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(
-        "Axios error occurred while fetching subscription data:",
-        error.response?.data || error.message
-      );
-    } else {
-      console.log("Unexpected error occurred:", error);
-    }
-    throw new Error("Failed to fetch subscription data.");
-  }
-}
 
 
 export async function getPlayListData(token: any):Promise<YouTubeResponse | undefined | any>{

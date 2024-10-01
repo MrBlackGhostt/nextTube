@@ -194,7 +194,7 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
                 <FaHome size={20} className="dark:text-slate-200" />
               </span>
               {isSidebarOpen && (
-                <Link href={'/home'} className="text-sm font-medium dark:text-slate-200">
+                <Link href={'/'} className="text-sm font-medium dark:text-slate-200">
                   Home
                 </Link>
               )}
