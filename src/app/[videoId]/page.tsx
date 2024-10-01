@@ -1,13 +1,13 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 
-
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { RelatedVideos, SearchYoutubeData, VideoDetails } from '../store/atoms';
+import { useRecoilValue } from 'recoil';
+import { RelatedVideos, VideoDetails } from '../store/atoms';
+import Link from 'next/link';
 
 const Page = () => {
   const params = useSearchParams();
@@ -15,17 +15,11 @@ const Page = () => {
   const [showdescription, setShowdescription] = useState(false);
   const relatedData = useRecoilValue(RelatedVideos);
 
-  useEffect(() => {
-    console.log('Updated VideoDetails: ', videoDetails);
-    console.log('RelatedData in component:', relatedData);
-  }, [videoDetails, relatedData]);
-
- 
   const id = params.get('id');
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full p-4 pr-10 ">
-      <div className="w-full lg:w-[75%]">
+    <div className="flex flex-col lg:flex-row gap-2 w-full h-screen  pr-10 ">
+      <div className="w-full lg:w-[75%] ">
         {id ? (
           <div className="aspect-video">
             <iframe
@@ -34,6 +28,7 @@ const Page = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
               allowFullScreen
               title={videoDetails?.snippet.title || 'Embedded YouTube Video'}
+              color='blue'
               className="w-full h-full rounded-3xl"
             ></iframe>
           </div>
@@ -47,27 +42,11 @@ const Page = () => {
             </h2>
             {/* <div>Posted by- {videoDetails.snippet.channelTitle}</div> */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm mb-4">
-              <p>
+              {/* <p>
                 {new Date(
                   videoDetails.snippet.publishedAt
                 ).toLocaleDateString()}
-              </p>
-              <div className="flex space-x-4">
-                <p>
-                  <strong>Views:</strong>{' '}
-                  {/* {parseInt(videoDetails.statistics.viewCount).toLocaleString()} */}
-                </p>
-                <p>
-                  <strong>Likes:</strong>{' '}
-                  {/* {parseInt(videoDetails.statistics.likeCount).toLocaleString()} */}
-                </p>
-                <p>
-                  <strong>Comments:</strong>{' '}
-                  {/* {parseInt(
-                    videoDetails.statistics.commentCount
-                  ).toLocaleString()} */}
-                </p>
-              </div>
+              </p> */}
             </div>
             {showdescription ? (
               <p className="mt-2 max-w-[1280px]">
@@ -86,40 +65,38 @@ const Page = () => {
           <div className="flex items-center mt-6 aspect-16/2 justify-center bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"></div>
         )}
       </div>
-{/* Related Videos */}
-      <div className="lg:pl-10 pt-6 lg:pt-0 h-screen w-1/4 overflow-hidden overflow-y-auto">
-        <div className="mt-4 space-y-4 ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1  gap-4">
+      {/* Related Videos */}
+      <div className="pt-6 pl-1 lg:pt-0 h-full w-full lg:w-1/4 overflow-hidden overflow-y-auto">
+        <div className="mt-4 ">
+          <div className="grid justify-start grid-cols-1 sm:grid-cols-2 lg:grid-cols-1  gap-3  ">
             {relatedData.map((video) => (
-              <div
+              <Link
+              href={`${video.id.videoId}/?id=${video.id.videoId}`}
                 key={video.id.videoId}
-                className="flex justify-between gap-4 w-5/6 items-start"
+                className="flex  gap-2 w-full h-32 lg:h-24   overflow-hidden items-start cursor-pointer"
               >
-                <div className="relative w-14 h-24 aspect-16/2 ">
+                <div className="relative w-1/2 h-32 lg:h-24 aspect-16/2 lg:aspect-video">
                   <Image
                     src={video.snippet.thumbnails.high.url}
                     alt={video.snippet.title}
                     fill
-                    className=" rounded-lg object-cover   w-full h-full"
+                    className=" rounded-lg object-cover"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <a
-                    href={`${video.id.videoId}/?id=${video.id.videoId}`}
-                    target="_blank"
-                    className="text-sm font-bold text-gray-900 dark:text-white hover:underline"
+                <div className="flex flex-col h-20">
+                  <p
+                    className="text-sm font-light text-gray-900 dark:text-white hover:underline"
                   >
                     {video.snippet.title}
-                  </a>
+                  </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {video.snippet.channelTitle}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {new Date(video.snippet.publishedAt).toLocaleDateString()}
                   </p>
-                 
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

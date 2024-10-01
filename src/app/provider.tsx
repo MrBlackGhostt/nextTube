@@ -1,25 +1,15 @@
-"use client"
+'use client';
 
-import { SessionProvider } from "next-auth/react"
-import { ReactNode } from "react"
-import { RecoilRoot } from "recoil"
+import { SessionProvider } from 'next-auth/react';
+import { ReactNode } from 'react';
+import { RecoilRoot } from 'recoil';
 
+const Provider = ({ children }: { children: ReactNode }) => {
+  return <SessionProvider>{children}</SessionProvider>;
+};
 
-const Provider = ({children}:{children:ReactNode }) => {
-  return (
-    <SessionProvider>
- 
-      {children}
-    
-    </SessionProvider>
-  )
-}
+export default Provider;
 
-export default Provider
-
-export const RecoilProvider = ({children}:{children: ReactNode}) =>{
-  return (       <RecoilRoot>
-    {children}
-  </RecoilRoot>)
-}
-
+export const RecoilProvider = ({ children }: { children: ReactNode }) => {
+  return <RecoilRoot>{children}</RecoilRoot>;
+};

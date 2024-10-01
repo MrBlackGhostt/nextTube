@@ -1,30 +1,21 @@
-import {atom} from 'recoil'
+import { atom } from 'recoil';
 
 export const SearchYoutubeData = atom<Video[]>({
-    key: 'youtubeSearch',
-    default:[]
-})
+  key: 'youtubeSearch',
+  default: [],
+});
 
 export const RelatedVideos = atom<Video[]>({
-    key:'relatedVideo',
-    default:[]
-})
+  key: 'relatedVideo',
+  default: [],
+});
 
 export const VideoDetails = atom({
-    key: 'videoData',
-    default: {
-      snippet: {
-        title: '',
-        description: '',  
-        publishTime: '',  
-        publishAt: '',  
-        channelTitle: '',  
-        publishedAt: '',  
-      },
-      statistics: {
-        viewCount: '',  
-        likeCount: '', 
-        commentCount: '',  
-      },
+  key: 'videoData',
+  default: {
+    snippet: {
+      title: '',
+      description: '',
     },
-  });
+  },
+});
