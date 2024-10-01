@@ -29,7 +29,7 @@ const Page = () => {
               allowFullScreen
               title={videoDetails?.snippet.title || 'Embedded YouTube Video'}
               color='blue'
-              className="w-full h-full rounded-3xl"
+              className="w-full h-full rounded-3xl aspect-video"
             ></iframe>
           </div>
         ) : (
