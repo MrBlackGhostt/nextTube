@@ -190,9 +190,9 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
           {/* Top section */}
           <div className={`flex flex-col mb-4`}>
             <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <span className="mr-4">
+              <Link href={'/'} className="mr-4">
                 <FaHome size={20} className="dark:text-slate-200" />
-              </span>
+              </Link>
               {isSidebarOpen && (
                 <Link href={'/'} className="text-sm font-medium dark:text-slate-200">
                   Home
@@ -200,9 +200,9 @@ const [mobileSearch, setMobileSearch] = useState<boolean>(false)
               )}
             </button>
             <button className="flex items-center p-2 my-1 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <span className="mr-4">
+              <Link href={'/subscriptions'} className="mr-4">
                 <MdSubscriptions size={20} className="dark:text-slate-200" />
-              </span>
+              </Link>
               {isSidebarOpen && (
                 <Link href={'/subscriptions'} className="text-sm font-medium dark:text-slate-200">
                   Subscriptions
