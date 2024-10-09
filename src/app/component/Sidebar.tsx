@@ -30,9 +30,9 @@ const Sidebar = () => {
   return (
     <div className="flex">
       <div
-        className={`fixed md:relative z-10 flex flex-col h-full p-4 transition-transform duration-300 ${
+        className={`fixed  z-10 flex flex-col h-full p-4 transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 ${isSidebarOpen ? "w-fit md:w-fit bg-slate-200 dark:bg-slate-800 rounded-lg" : "md:w-fit"}  `}
+        }  ${isSidebarOpen ? "w-fit md:w-fit bg-slate-200 dark:bg-slate-800 rounded-lg" : "md:w-fit"}  `}
       >
         {/* Top section */}
         <div className="flex flex-col mb-4">
