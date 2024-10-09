@@ -4,6 +4,7 @@ import Navbar from './component/Navbar';
 import Provider, { RecoilProvider } from './provider';
 import { Suspense } from 'react';
 import { ThemeProvider } from '@/components/theme-provider';
+import Sidebar from './component/Sidebar';
 
 
 export default function RootLayout({
@@ -24,7 +25,17 @@ export default function RootLayout({
         >
           <Provider>
             <Suspense>
-              <Navbar>{children}</Navbar>
+              <div className='grid'>
+
+              <Navbar />
+              <div className='flex'>
+    
+
+              <Sidebar/>
+              
+              {children}
+              </div>
+              </div>
             </Suspense>
           </Provider>
         </ThemeProvider>
