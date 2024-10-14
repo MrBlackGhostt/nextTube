@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const page = () => {
+const Page = () => {
   const setWatchHistory = useSetRecoilState(WatchHistory);
   const setVideoData = useSetRecoilState(VideoDetails);
   const WatchHistorylocal = localStorage.getItem('watch-history');
@@ -78,4 +78,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
