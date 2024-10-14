@@ -2,12 +2,12 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useSearchParams } from "next/navigation"; // Import useRouter for navigation
 import {
   FaHome,
   FaPlay,
   FaHistory,
-  FaBars,
+
 } from "react-icons/fa";
 import { MdSubscriptions } from "react-icons/md";
 import { signIn, signOut, useSession } from "next-auth/react";

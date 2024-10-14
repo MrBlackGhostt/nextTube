@@ -5,8 +5,13 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GetSearchData } from '../api/auth/youtubeapi';
-import { RelatedVideos, SearchYoutubeData, VideoDetails } from '../store/atoms';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  RelatedVideos,
+  SearchYoutubeData,
+  VideoDetails,
+  WatchHistory,
+} from '../store/atoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 function timeago(publishedAt: string | number | Date): string {
   const publishedDate = new Date(publishedAt);
@@ -35,13 +40,17 @@ function timeago(publishedAt: string | number | Date): string {
 }
 
 const Homepage: React.FC = () => {
-  const [searchData, setSearchData] = useRecoilState<Video[]>(SearchYoutubeData);
+  const [searchData, setSearchData] =
+    useRecoilState<Video[]>(SearchYoutubeData);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || null;
 
   const setVideoData = useSetRecoilState(VideoDetails);
   const setRelatedVideos = useSetRecoilState(RelatedVideos);
+  const setWatchHistory = useSetRecoilState(WatchHistory);
+
+  const WatchVideoHistory = useRecoilValue(WatchHistory);
 
   useEffect(() => {
     (async () => {
@@ -68,13 +77,14 @@ const Homepage: React.FC = () => {
   }, [searchTerm]);
 
   if (error) return <h1>{error}</h1>;
-  if (searchData.length === 0) return (
-    <div className="flex items-center justify-center h-screen">
-      <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold text-center transition-transform duration-500 ease-in-out transform hover:scale-105">
-        Search What You Want to Search
-      </h1>
-    </div>
-  );
+  if (searchData.length === 0)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold text-center transition-transform duration-500 ease-in-out transform hover:scale-105">
+          Search What You Want to Search
+        </h1>
+      </div>
+    );
 
   return (
     <div className="p-4 w-full">
@@ -91,6 +101,10 @@ const Homepage: React.FC = () => {
                 },
               });
               setRelatedVideos((prev) => [...searchData, ...prev]);
+              setWatchHistory((prev) => [video, ...prev]);
+              let videoString = JSON.stringify(WatchVideoHistory);
+console.log('STRING TO STORE LOCALLY', videoString)
+              localStorage.setItem('watch-history', videoString);
             }}
             key={index}
             className="w-full overflow-hidden rounded-lg"

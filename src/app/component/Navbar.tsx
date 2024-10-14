@@ -2,18 +2,11 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import {
   FaBell,
-  FaHome,
-  FaCompass,
-  FaPlay,
-  FaHistory,
-  FaClock,
-  FaThumbsUp,
+
   FaSearch,
-  FaVideo,
+
   FaBars,
 } from 'react-icons/fa';
-import { MdSubscriptions } from 'react-icons/md';
-import { RiVideoLine } from 'react-icons/ri';
 
 import Image from 'next/image';
 
@@ -31,7 +24,6 @@ import { ModeToggle } from '@/components/theme-toggler';
 import { useState } from 'react';
 
 import { GoArrowLeft } from 'react-icons/go';
-import { Sidebar } from 'lucide-react';
 
 const Navbar = () => {
   const pathName = usePathname();

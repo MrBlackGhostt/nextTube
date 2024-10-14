@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { json } from 'stream/consumers';
 
 export const SearchYoutubeData = atom<Video[]>({
   key: 'youtubeSearch',
@@ -19,3 +20,9 @@ export const VideoDetails = atom({
     },
   },
 });
+
+
+export const WatchHistory = atom<Video[]>({
+  key:'watchVideoData',
+  default:[]
+})
