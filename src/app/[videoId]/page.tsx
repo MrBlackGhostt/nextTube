@@ -1,12 +1,12 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { useRecoilValue } from 'recoil';
-import { RelatedVideos, VideoDetails } from '../store/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil'; 
+import { RelatedVideos, VideoDetails, WatchHistory } from '../store/atoms';
 import Link from 'next/link';
 
 const Page = () => {
@@ -14,8 +14,12 @@ const Page = () => {
   const videoDetails = useRecoilValue(VideoDetails);
   const [showdescription, setShowdescription] = useState(false);
   const relatedData = useRecoilValue(RelatedVideos);
+  const WatchHistoryData = useRecoilValue(WatchHistory)
+  const setWatchHistory = useSetRecoilState(WatchHistory);
 
   const id = params.get('id');
+ 
+
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 w-full h-screen lg:pl-10 ">
@@ -72,6 +76,12 @@ const Page = () => {
               <Link
                 href={`${video.id.videoId}/?id=${video.id.videoId}`}
                 key={video.id.videoId}
+                onClick={()=>{
+                  setWatchHistory((prev) => [video, ...prev]);
+              let videoString = JSON.stringify(WatchHistoryData);
+console.log('STRING TO STORE LOCALLY', videoString)
+              localStorage.setItem('watch-history', videoString);
+                }}
                 className="flex  gap-2 w-full h-32 lg:h-24   overflow-hidden items-start cursor-pointer"
               >
                 <div className="relative w-1/2 h-32 lg:h-24 aspect-16/2 lg:aspect-video">
