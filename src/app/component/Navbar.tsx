@@ -41,7 +41,7 @@ const Navbar = () => {
       newParams.append('q', searchTerm);
 
       const queryString = newParams.toString();
-      const newUrl = `${pathName}?${queryString}`;
+      const newUrl = `home?${queryString}`;
 
       router.push(newUrl);
     }
@@ -54,7 +54,7 @@ const Navbar = () => {
     newParams.append('q', searchTerm);
 
     const queryString = newParams.toString();
-    const newUrl = `${pathName}?${queryString}`;
+    const newUrl = `home?${queryString}`;
 
     router.push(newUrl);
   };
