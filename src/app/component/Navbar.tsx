@@ -31,7 +31,7 @@ const Navbar = () => {
   const { data: session, status } = useSession();
   const [mobileSearch, setMobileSearch] = useState<boolean>(false);
   const router = useRouter();
-  const [sidebarOpen, setSidebarOpen] = useState<string>('close');
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const newParams = new URLSearchParams();
@@ -41,7 +41,7 @@ const Navbar = () => {
       newParams.append('q', searchTerm);
 
       const queryString = newParams.toString();
-      const newUrl = `home?${queryString}`;
+      const newUrl = `results?${queryString}`;
 
       router.push(newUrl);
     }
@@ -54,15 +54,15 @@ const Navbar = () => {
     newParams.append('q', searchTerm);
 
     const queryString = newParams.toString();
-    const newUrl = `home?${queryString}`;
+    const newUrl = `results?${queryString}`;
 
     router.push(newUrl);
   };
 
-  const handleSidebar = ()=>{
-    setSidebarOpen(sidebarOpen == 'open' ? 'close' : 'open');
+  const handleSidebar = async ()=>{
+    await setSidebarOpen(!sidebarOpen);
 
-    newParams.append('s', sidebarOpen);
+    newParams.append('s', sidebarOpen.toString());
     if (searchTerm) newParams.append('q', searchTerm);
     const id = searchParams.get('id')
     if (id) newParams.append('id', id);

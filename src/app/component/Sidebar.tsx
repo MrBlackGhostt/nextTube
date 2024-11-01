@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation"; // Import useRouter for navigation
 import {
@@ -22,10 +22,12 @@ import {
 
 const Sidebar = () => {
   const searchParams = useSearchParams();
-  const isSidebarOpen = searchParams.get("s") === "open"; 
+  const isSidebarOpen = searchParams.get("s") === "true"; 
   const { data: session, status } = useSession();
 
+useEffect(()=>{
 
+},[isSidebarOpen])
 
   return (
     <div className="flex">

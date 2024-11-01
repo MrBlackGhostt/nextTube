@@ -57,8 +57,8 @@ export async function GetVideoById(id: string): Promise<YouTubeApiResponse | nul
       const apiUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${encodeURIComponent(
         searchTerm
       )}&type=video${videoId ? `&videoCategoryId=${videoId}` : ''}&videoDuration=medium&key=${apiKey}`;
-  
-      const response = await axios.get(apiUrl);
+
+      const response = await axios.get(`http://localhost:8080/search?q=${searchTerm}`);
 
       return response.data;
     } catch (error) {

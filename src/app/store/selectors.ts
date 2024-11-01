@@ -8,3 +8,11 @@ export const RecommendVideos = selector({
         return VideoData
     }
 })
+
+export const SearchResults = selector({
+    key:'searchResults',
+    get:({get}) =>  {
+        const result = get(SearchYoutubeData)
+        return result
+    }
+})

@@ -27,7 +27,7 @@ const Page = () => {
      setWatchHistory(filterTheWatchData);
  }
   if (watchdata?.length === 0)
-    return <div className="text-red-400 font-bold"> No History to see</div>;
+    return <div className="flex justify-center items-center text-red-400 font-bold"> No History to see</div>;
 
   return (
     <div className="p-4 w-full">

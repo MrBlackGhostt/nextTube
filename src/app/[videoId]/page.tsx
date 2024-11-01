@@ -8,15 +8,17 @@ import Image from 'next/image';
 import { useRecoilValue, useSetRecoilState } from 'recoil'; 
 import { RelatedVideos, VideoDetails, WatchHistory } from '../store/atoms';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const Page = () => {
+  const [addHome, setAddHome] = useState<boolean>(false)
   const params = useSearchParams();
   const videoDetails = useRecoilValue(VideoDetails);
   const [showdescription, setShowdescription] = useState(false);
   const relatedData = useRecoilValue(RelatedVideos);
   const WatchHistoryData = useRecoilValue(WatchHistory)
   const setWatchHistory = useSetRecoilState(WatchHistory);
-
+  
   const id = params.get('id');
  
 
@@ -43,14 +45,7 @@ const Page = () => {
             <h2 className="text-xl sm:text-2xl md:font-bold">
               {videoDetails.snippet.title}
             </h2>
-            {/* <div>Posted by- {videoDetails.snippet.channelTitle}</div> */}
-            {/* <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm mb-4">
-              {/* <p>
-                {new Date(
-                  videoDetails.snippet.publishedAt
-                ).toLocaleDateString()}
-              </p> */}
-            {/* </div> */}
+  
             {showdescription ? (
               <p className="mt-2 max-w-[1280px]">
                 {videoDetails.snippet.description}
@@ -58,11 +53,19 @@ const Page = () => {
             ) : (
               ''
             )}
+            <div className='flex justify-between'>
+
             {videoDetails.snippet.description && (
               <button onClick={() => setShowdescription(!showdescription)}>
                 {showdescription ? 'Hide' : 'See'} description
               </button>
             )}
+            <Button className={`p-1 ${addHome ? 'bg-red-400' : null} hover:null`} onClick={()=>{
+            
+              setAddHome(!addHome)
+              // localStorage.setItem('nexttube-home',video)
+              }}>Add to Home</Button>
+            </div>
           </div>
         ) : (
           <div className="flex items-center mt-6 aspect-16/2 justify-center bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"></div>
@@ -79,12 +82,12 @@ const Page = () => {
                 onClick={()=>{
                   setWatchHistory((prev) => [video, ...prev]);
               let videoString = JSON.stringify(WatchHistoryData);
-console.log('STRING TO STORE LOCALLY', videoString)
+
               localStorage.setItem('watch-history', videoString);
                 }}
                 className="flex  gap-2 w-full h-32 lg:h-24   overflow-hidden items-start cursor-pointer"
               >
-                <div className="relative w-1/2 h-32 lg:h-24 aspect-16/2 lg:aspect-video">
+                <div className="relative w-1/2 h-32 lg:h-24 aspect-16/2 ">
                   <Image
                     src={video.snippet.thumbnails.high.url}
                     alt={video.snippet.title}
