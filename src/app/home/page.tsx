@@ -2,59 +2,24 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
 import { GetSearchData } from '../api/auth/youtubeapi';
-import {
-  RelatedVideos,
-  SearchYoutubeData,
-  VideoDetails,
-  WatchHistory,
-} from '../store/atoms';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-
-function timeago(publishedAt: string | number | Date): string {
-  const publishedDate = new Date(publishedAt);
-  const currentDate = new Date();
-  const differenceInSeconds = Math.floor(
-    (currentDate.getTime() - publishedDate.getTime()) / 1000
-  );
-
-  const intervals = [
-    { label: 'year', seconds: 31536000 },
-    { label: 'month', seconds: 2592000 },
-    { label: 'day', seconds: 86400 },
-    { label: 'hour', seconds: 3600 },
-    { label: 'minute', seconds: 60 },
-    { label: 'second', seconds: 1 },
-  ];
-
-  for (const interval of intervals) {
-    const count = Math.floor(differenceInSeconds / interval.seconds);
-    if (count >= 1) {
-      return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
-    }
-  }
-
-  return 'just now';
-}
+import { SearchYoutubeData } from '../store/atoms';
+import { useRecoilState } from 'recoil';
+import VideoCard, { VideoCardSkeleton } from '../component/VideoCard';
+import { Search } from 'lucide-react';
 
 const Homepage: React.FC = () => {
   const [searchData, setSearchData] =
     useRecoilState<Video[]>(SearchYoutubeData);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || null;
-
-  const setVideoData = useSetRecoilState(VideoDetails);
-  const setRelatedVideos = useSetRecoilState(RelatedVideos);
-  const setWatchHistory = useSetRecoilState(WatchHistory);
-
-  const WatchVideoHistory = useRecoilValue(WatchHistory);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const youtubeSearchData = searchTerm
           ? await GetSearchData(searchTerm)
           : null;
@@ -72,69 +37,61 @@ const Homepage: React.FC = () => {
       } catch (err) {
         console.error('Error fetching search data', err);
         setError('Failed to load search data');
+      } finally {
+        setLoading(false);
       }
     })();
   }, [searchTerm]);
 
-  if (error) return <h1>{error}</h1>;
-  if (searchData.length === 0)
+  if (error) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold text-center transition-transform duration-500 ease-in-out transform hover:scale-105">
-          Search What You Want to Search
-        </h1>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8">
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-6 py-4 text-sm text-destructive">
+          {error}
+        </div>
       </div>
     );
+  }
+
+  if (!loading && searchData.length === 0) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-6 p-8">
+        <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary">
+          <Search className="h-8 w-8 text-muted-foreground" />
+        </div>
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h1 className="text-balance text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            Discover your next favorite video
+          </h1>
+          <p className="max-w-md text-pretty text-sm text-muted-foreground">
+            Use the search bar above to find videos. Results will appear here in
+            a beautiful grid layout.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-4 w-full">
-      {/* Video Grid */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6 xl:grid-cols-4 justify-center">
-        {searchData.map((video, index) => (
-          <Link
-            href={`${video.id.videoId}/?id=${video.id.videoId}`}
-            onClick={() => {
-              setVideoData({
-                snippet: {
-                  title: video.snippet.title || '',
-                  description: video.snippet.description || '',
-                },
-              });
-              setRelatedVideos((prev) => [...searchData, ...prev]);
-              setWatchHistory((prev) => [video, ...prev]);
-              let videoString = JSON.stringify(WatchVideoHistory);
-console.log('STRING TO STORE LOCALLY', videoString)
-              localStorage.setItem('watch-history', videoString);
-            }}
-            key={index}
-            className="w-full overflow-hidden rounded-lg"
-          >
-            <div className="flex flex-col gap-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-[full] h-60 md:h-72">
-              {/* Thumbnail */}
-              <div className="relative w-full h-full">
-                {video.snippet.thumbnails?.medium?.url && (
-                  <Image
-                    src={video.snippet.thumbnails.medium.url}
-                    alt={video.snippet.title}
-                    fill
-                    sizes="h-full"
-                    className="rounded-lg"
-                  />
-                )}
-              </div>
+    <div className="p-4 md:p-6">
+      {searchTerm && (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-foreground">
+            Results for{' '}
+            <span className="text-primary">{`"${searchTerm}"`}</span>
+          </h2>
+        </div>
+      )}
 
-              {/* Video Info */}
-              <div className="">
-                <h3 className="font-semibold text-md truncate">
-                  {video.snippet.title}
-                </h3>
-                <div className="flex justify-between text-[14px]">
-                  <p className="">{video.snippet.channelTitle}</p>
-                  <p className="">{timeago(video.snippet.publishedAt)}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
+      {/* Video Grid */}
+      <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {loading &&
+          searchData.length === 0 &&
+          Array.from({ length: 8 }).map((_, i) => (
+            <VideoCardSkeleton key={i} />
+          ))}
+        {searchData.map((video, index) => (
+          <VideoCard key={index} video={video} saveToHistory />
         ))}
       </div>
     </div>

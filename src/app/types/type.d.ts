@@ -17,8 +17,8 @@ interface SubscriptionItem {
 
 interface Thumbnail {
     url: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
   }
   
   interface Snippet {
@@ -71,7 +71,11 @@ interface Thumbnail {
 
   
   interface Video {
-    statistics: any;
+    statistics?: {
+      viewCount: string;
+      likeCount: string;
+      commentCount: string;
+    };
     id: {
       videoId: string;
     };
@@ -83,16 +87,11 @@ interface Thumbnail {
       };
       title: string;
       description: string,
-      publishTime: string,
-      publishAt: string,
+      publishTime?: string,
+      publishAt?: string,
       channelTitle: string;
       publishedAt: string;
 
-    };
-    statistics: {
-      viewCount: string;
-      likeCount: string;
-      commentCount: string;
     };
   }
   interface VideoDetail {
