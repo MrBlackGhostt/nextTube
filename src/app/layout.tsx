@@ -7,6 +7,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Sidebar from './component/Sidebar';
 
 
+import ContentWrapper from './component/ContentWrapper';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +35,7 @@ export default function RootLayout({
 
               <Sidebar/>
               
-              {children}
+              <ContentWrapper>{children}</ContentWrapper>
               </div>
               </div>
             </Suspense>
