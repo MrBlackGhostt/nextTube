@@ -54,9 +54,11 @@ export function VideoCardSkeleton() {
 export default function VideoCard({
   video,
   saveToHistory = false,
+  priority = false,
 }: {
   video: Video;
   saveToHistory?: boolean;
+  priority?: boolean;
 }) {
   const setVideoData = useSetRecoilState(VideoDetails);
   const setRelatedVideos = useSetRecoilState(RelatedVideos);
@@ -93,6 +95,7 @@ export default function VideoCard({
             src={video.snippet.thumbnails.medium.url}
             alt={video.snippet.title}
             fill
+            priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />

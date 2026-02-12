@@ -54,6 +54,7 @@ const Page = () => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              loading="lazy"
               title={videoDetails?.snippet.title || 'Embedded YouTube Video'}
               className="h-full w-full"
             />
@@ -103,7 +104,7 @@ const Page = () => {
           Related Videos
         </h2>
         <div className="flex flex-col gap-3">
-          {relatedData.map((video) => (
+          {relatedData.map((video, index) => (
             <Link
               href={`${video.id.videoId}/?id=${video.id.videoId}`}
               key={video.id.videoId}
@@ -125,6 +126,7 @@ const Page = () => {
                   src={video.snippet.thumbnails.high.url}
                   alt={video.snippet.title}
                   fill
+                  priority={index < 4}
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
