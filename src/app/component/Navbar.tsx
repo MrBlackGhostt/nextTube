@@ -1,44 +1,28 @@
-'use client';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import {
-  FaBell,
+"use client";
+import { FaBell, FaSearch, FaBars } from "react-icons/fa";
 
-  FaSearch,
+import Image from "next/image";
 
-  FaBars,
-} from 'react-icons/fa';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import Image from 'next/image';
+import { ModeToggle } from "@/components/theme-toggler";
+import { useState } from "react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
-import { ModeToggle } from '@/components/theme-toggler';
-import { useState } from 'react';
-
-import { GoArrowLeft } from 'react-icons/go';
+import { GoArrowLeft } from "react-icons/go";
 
 const Navbar = () => {
   const pathName = usePathname();
- const searchParams = useSearchParams()
-  const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
   const [mobileSearch, setMobileSearch] = useState<boolean>(false);
   const router = useRouter();
-  const [sidebarOpen, setSidebarOpen] = useState<string>('close');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState<string>("close");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const newParams = new URLSearchParams();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      newParams.append('q', searchTerm);
+    if (event.key === "Enter") {
+      newParams.append("q", searchTerm);
 
       const queryString = newParams.toString();
       const newUrl = `${pathName}?${queryString}`;
@@ -51,7 +35,7 @@ const Navbar = () => {
     e.preventDefault();
 
     // Update the URL with the query parameter
-    newParams.append('q', searchTerm);
+    newParams.append("q", searchTerm);
 
     const queryString = newParams.toString();
     const newUrl = `${pathName}?${queryString}`;
@@ -59,18 +43,18 @@ const Navbar = () => {
     router.push(newUrl);
   };
 
-  const handleSidebar = ()=>{
-    setSidebarOpen(sidebarOpen == 'open' ? 'close' : 'open');
+  const handleSidebar = () => {
+    setSidebarOpen(sidebarOpen == "open" ? "close" : "open");
 
-    newParams.append('s', sidebarOpen);
-    if (searchTerm) newParams.append('q', searchTerm);
-    const id = searchParams.get('id')
-    if (id) newParams.append('id', id);
+    newParams.append("s", sidebarOpen);
+    if (searchTerm) newParams.append("q", searchTerm);
+    const id = searchParams.get("id");
+    if (id) newParams.append("id", id);
 
     const queryString = newParams.toString();
     const newUrl = `${pathName}?${queryString}`;
     router.push(newUrl);
-  }
+  };
 
   return (
     <>
@@ -114,12 +98,12 @@ const Navbar = () => {
               className="dark:text-slate-200 dark:group-hover:text-slate-100"
             />
           </button>
-          <div className="flex relative md:w-12 md:h-12  items-center ml-6">
+          <div className="flex relative w-8 h-8 items-center ml-4">
             <Image
-              src="/images/nexttube logo.webp"
+              src="/images/nextTube.jpg"
               alt="YouTube"
               fill
-              className="rounded-full"
+              className="rounded-full object-contain"
             />
           </div>
         </div>
@@ -155,38 +139,6 @@ const Navbar = () => {
             <FaBell size={20} className="text-slate-800 dark:text-slate-200" />
           </button>
           <ModeToggle />
-          <div className="hidden md:flex">
-            {status != 'authenticated' ? (
-              <div>
-                <button
-                  className="p-2 mx-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full flex items-center dark:text-slate-200 dark:hover:text-slate-100"
-                  onClick={() => signIn('google')}
-                >
-                  <span className="">Login</span>
-                </button>
-              </div>
-            ) : (
-              <div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="relative w-8 h-8 rounded-full overflow-hidden">
-                    <Image
-                      src={session.user?.image || ''}
-                      alt="user image"
-                      fill
-                      className="h-auto"
-                    />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => signOut()}>
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
-          </div>
         </div>
       </nav>
     </>

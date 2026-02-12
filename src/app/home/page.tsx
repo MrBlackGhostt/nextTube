@@ -9,8 +9,7 @@ import VideoCard, { VideoCardSkeleton } from '../component/VideoCard';
 import { Search } from 'lucide-react';
 
 const Homepage: React.FC = () => {
-  const [searchData, setSearchData] =
-    useRecoilState<Video[]>(SearchYoutubeData);
+  const [searchData, setSearchData] = useRecoilState<Video[]>(SearchYoutubeData);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -29,8 +28,8 @@ const Homepage: React.FC = () => {
           youtubeSearchData.items.length > 0
         ) {
           setSearchData((prev) =>
-            youtubeSearchData
-              ? [...youtubeSearchData?.items, ...(prev || [])]
+            youtubeSearchData?.items.length
+              ? [...youtubeSearchData.items, ...(prev || [])]
               : []
           );
         }
@@ -82,16 +81,18 @@ const Homepage: React.FC = () => {
           </h2>
         </div>
       )}
-
       {/* Video Grid */}
       <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {loading &&
-          searchData.length === 0 &&
-          Array.from({ length: 8 }).map((_, i) => (
-            <VideoCardSkeleton key={i} />
-          ))}
+        {loading && searchData.length === 0 && Array.from({ length: 8 }).map((_, i) => (
+          <VideoCardSkeleton key={i} />
+        ))}
         {searchData.map((video, index) => (
-          <VideoCard key={index} video={video} saveToHistory />
+          <VideoCard
+            key={index}
+            video={video}
+            saveToHistory
+            priority={index < 8}
+          />
         ))}
       </div>
     </div>
